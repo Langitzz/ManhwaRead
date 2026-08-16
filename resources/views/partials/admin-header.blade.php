@@ -67,7 +67,7 @@
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
 
-                    <img src="{{ asset('images/mbg.jpeg') }}" class="user-image rounded-circle shadow"
+                    <img src="{{ asset('images/admin/mbg.jpeg') }}" class="user-image rounded-circle shadow"
                         alt="User">
 
                     <span class="d-none d-md-inline">
@@ -79,7 +79,7 @@
 
                     <li class="user-header text-bg-primary">
 
-                        <img src="{{ asset('images/mbg.jpeg') }}" class="rounded-circle shadow"
+                        <img src="{{ asset('images/admin/mbg.jpeg') }}" class="rounded-circle shadow"
                             alt="User">
 
                         <p>
