@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +20,7 @@ Route::controller(UserController::class)->group(function () {
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
-        Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])
+        Route::get('/', [AdminController::class, 'index'])
             ->name('admin');
         Route::view('/manhwa', 'admin.manhwa')
             ->name('manhwa.index');
@@ -44,8 +46,14 @@ Route::prefix('admin')
             ->name('riwayat.index');
         Route::view('/users', 'admin.users')
             ->name('user.index');
-        Route::view('/role-user', 'admin.role-user')
+        Route::get('/role-user', [RoleController::class, 'index'])
             ->name('admin.user.index');
+        Route::post('/role-user', [RoleController::class, 'store'])
+            ->name('admin.user.store');
+        Route::put('/role-user/{role}', [RoleController::class, 'update'])
+            ->name('admin.user.update');
+        Route::delete('/role-user/{role}', [RoleController::class, 'destroy'])
+            ->name('admin.user.destroy');
         Route::view('/hak-akses', 'admin.hak-akses')
             ->name('admin.access.index');
         Route::view('/log-aktivitas', 'admin.log-aktivitas')
