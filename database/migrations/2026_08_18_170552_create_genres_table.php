@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('genres', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_genre')->unique();
+            $table->text('deskripsi')->nullable();
             $table->timestamps();
         });
     }
