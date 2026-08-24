@@ -9,13 +9,49 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminMiddleware
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  Closure(Request): (Response)  $next
+     * Pemetaan awalan nama route ke key Permission (grup menu).
      */
+    protected array $routeToPermission = [
+        'admin' => 'dashboard',
+        'genre.' => 'master_data',
+        'manhwa.' => 'master_data',
+        'chapter.' => 'master_data',
+        'komentar.' => 'aktivitas',
+        'bookmark.' => 'aktivitas',
+        'riwayat.' => 'aktivitas',
+        'user.' => 'user',
+        'admin.user.' => 'admin',
+        'admin.access.' => 'admin',
+        'admin.log.' => 'admin',
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->role == 'admin') {
+        if (! auth()->check()) {
+            abort(403);
+        }
+
+        $user = auth()->user();
+        $routeName = $request->route()->getName();
+
+        $permissionKey = null;
+
+        foreach ($this->routeToPermission as $prefix => $key) {
+            if ($routeName === $prefix || str_starts_with($routeName, $prefix)) {
+                $permissionKey = $key;
+                break;
+            }
+        }
+
+        if ($permissionKey === null) {
+            abort(403);
+        }
+
+        $hasAccess = $user->userRole?->permissions()
+            ->where('key', $permissionKey)
+            ->exists();
+
+        if ($hasAccess) {
             return $next($request);
         }
 

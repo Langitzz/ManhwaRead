@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h1 class="mb-0">Tambah Genre</h1>
+                        <h1 class="mb-0">Edit Genre</h1>
                     </div>
 
                     <div class="col-sm-6">
@@ -17,7 +17,7 @@
                                 <a href="{{ route('genre.index') }}">Genre</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Tambah
+                                Edit
                             </li>
                         </ol>
                     </div>
@@ -27,13 +27,14 @@
 
         <div class="app-content">
             <div class="container-fluid">
-                <form action="{{ route('genre.store') }}" method="POST">
+                <form action="{{ route('genre.update', $genre) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <i class="bi bi-plus-circle me-2"></i>
-                                Form Tambah Genre
+                                <i class="bi bi-pencil-square me-2"></i>
+                                Form Edit Genre
                             </h3>
                         </div>
 
@@ -45,7 +46,7 @@
                                     </label>
                                     <input type="text" name="nama_genre" id="nama_genre"
                                         class="form-control @error('nama_genre') is-invalid @enderror"
-                                        value="{{ old('nama_genre') }}" placeholder="Contoh: Action"
+                                        value="{{ old('nama_genre', $genre->nama_genre) }}"
                                         autocomplete="off">
                                     @error('nama_genre')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -58,13 +59,13 @@
                                     <label for="deskripsi" class="form-label">
                                         Deskripsi
                                     </label>
-                                    <textarea name="deskripsi" id="deskripsi" rows="3" class="form-control @error('deskripsi') is-invalid @enderror"
-                                        placeholder="Deskripsi singkat genre (opsional)">{{ old('deskripsi') }}</textarea>
+                                    <textarea name="deskripsi" id="deskripsi" rows="3" class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi', $genre->deskripsi) }}</textarea>
                                     @error('deskripsi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <label for="status" class="form-label d-block">
@@ -72,7 +73,7 @@
                                     </label>
                                     <div class="form-check form-switch">
                                         <input type="checkbox" name="status" id="status" class="form-check-input"
-                                            value="1" {{ old('status', true) ? 'checked' : '' }}>
+                                            value="1" {{ old('status', $genre->status) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="status">
                                             Aktif
                                         </label>
@@ -88,7 +89,7 @@
                             </a>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save me-1"></i>
-                                Simpan
+                                Simpan Perubahan
                             </button>
                         </div>
                     </div>

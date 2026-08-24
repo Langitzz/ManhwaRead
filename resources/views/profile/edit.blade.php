@@ -1,36 +1,30 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div style="
-        background:#111827;
-        margin:-24px -24px;
-        padding:24px;
-    ">
-            <h2
-                style="
-            font-size:24px;
-            font-weight:700;
-            color:#f8fafc;
-            margin:0;
-        ">
-                Profil Saya
-            </h2>
-            <p style="
-            margin:5px 0 0;
-            color:#94a3b8;
-            font-size:14px;
-        ">
-                Kelola informasi akun dan keamanan akun Anda.
-            </p>
+@extends('layouts.admin')
+
+@section('title', 'Profil Saya')
+
+@section('content')
+
+    <div class="app-content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1 class="mb-0">Profil Saya</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('admin') }}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Profil Saya
+                        </li>
+                    </ol>
+                </div>
+            </div>
         </div>
-    </x-slot>
+    </div>
 
     <style>
-        .profile-page {
-            background: #111827;
-            min-height: calc(100vh - 65px);
-            padding: 40px 20px;
-        }
-
         .profile-container {
             max-width: 900px;
             margin: 0 auto;
@@ -86,7 +80,6 @@
             font-size: 14px;
         }
 
-        /* Form Breeze */
         .profile-card label {
             color: #e5e7eb !important;
         }
@@ -106,64 +99,61 @@
             border-radius: 8px;
         }
     </style>
-    <div class="profile-page">
-        <div class="profile-container">
 
-            {{-- Foto & Identitas --}}
-            <div class="profile-card profile-info">
-                <img src="{{ asset('images/admin/mbg.jpeg') }}" alt="Foto Profil" class="profile-photo">
-                <h3 class="profile-name">
-                    {{ Auth::user()->name }}
-                </h3>
-                <p class="profile-email">
-                    {{ Auth::user()->email }}
-                </p>
-            </div>
+    <div class="app-content">
+        <div class="container-fluid">
+            <div class="profile-container">
 
-            {{-- Informasi Profil --}}
-            <div class="profile-card">
-                <div style="margin-bottom:25px;">
-                    <h3 class="profile-title">
-                        Informasi Profil
+                {{-- Foto & Identitas --}}
+                <div class="profile-card profile-info">
+                    <img src="{{ asset('images/admin/mbg.jpeg') }}" alt="Foto Profil" class="profile-photo">
+                    <h3 class="profile-name">
+                        {{ Auth::user()->name }}
                     </h3>
-                    <p class="profile-description">
-                        Perbarui nama dan alamat email akun Anda.
+                    <p class="profile-email">
+                        {{ Auth::user()->email }}
                     </p>
                 </div>
-                @include('profile.partials.update-profile-information-form')
-            </div>
 
-            {{-- Password --}}
-            <div class="profile-card">
-                <div style="margin-bottom:25px;">
-                    <h3 class="profile-title">
-                        Ubah Password
-                    </h3>
-                    <p class="profile-description">
-                        Pastikan akun Anda menggunakan password yang kuat.
-                    </p>
+                {{-- Informasi Profil --}}
+                <div class="profile-card">
+                    <div style="margin-bottom:25px;">
+                        <h3 class="profile-title">
+                            Informasi Profil
+                        </h3>
+                        <p class="profile-description">
+                            Perbarui nama dan alamat email akun Anda.
+                        </p>
+                    </div>
+                    @include('profile.partials.update-profile-information-form')
                 </div>
-                @include('profile.partials.update-password-form')
-            </div>
 
-            {{-- Hapus Akun --}}
-            <div class="profile-card">
-                <div style="margin-bottom:25px;">
-                    <h3
-                        style="
-                        margin:0;
-                        font-size:20px;
-                        font-weight:700;
-                        color:#f87171;
-                    ">
-                        Hapus Akun
-                    </h3>
-                    <p class="profile-description">
-                        Hapus akun Anda secara permanen beserta seluruh datanya.
-                    </p>
+                {{-- Password --}}
+                <div class="profile-card">
+                    <div style="margin-bottom:25px;">
+                        <h3 class="profile-title">
+                            Ubah Password
+                        </h3>
+                        <p class="profile-description">
+                            Pastikan akun Anda menggunakan password yang kuat.
+                        </p>
+                    </div>
+                    @include('profile.partials.update-password-form')
                 </div>
-                @include('profile.partials.delete-user-form')
+
+                {{-- Hapus Akun --}}
+                <div class="profile-card">
+                    <div style="margin-bottom:25px;">
+                        <h3 style="margin:0; font-size:20px; font-weight:700; color:#f87171;">
+                            Hapus Akun
+                        </h3>
+                        <p class="profile-description">
+                            Hapus akun Anda secara permanen beserta seluruh datanya.
+                        </p>
+                    </div>
+                    @include('profile.partials.delete-user-form')
+                </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

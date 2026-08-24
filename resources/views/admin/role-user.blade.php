@@ -3,8 +3,6 @@
 @section('title', 'Rolle User')
 
 @section('content')
-    <main class="app-main">
-
         <div class="app-content-header">
             <div class="container-fluid">
                 <div class="row">
@@ -107,7 +105,6 @@
                 </div>
             </div>
         </div>
-    </main>
     <!-- Modal Tambah Role -->
     <div class="modal fade" id="modalTambahRole" tabindex="-1" aria-labelledby="modalTambahRoleLabel" aria-hidden="true">
         <div class="modal-dialog">

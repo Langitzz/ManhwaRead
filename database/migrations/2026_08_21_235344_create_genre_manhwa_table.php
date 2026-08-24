@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
+        Schema::create('genre_manhwa', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_genre')->unique();
-            $table->text('deskripsi')->nullable();
-        $table->boolean('status')->default(true);
+            $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('manhwa_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('genre_manhwa');
     }
 };

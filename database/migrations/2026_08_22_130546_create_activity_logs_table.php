@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
+        Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_genre')->unique();
-            $table->text('deskripsi')->nullable();
-        $table->boolean('status')->default(true);
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('aktivitas');
+            $table->text('detail')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('activity_logs');
     }
 };

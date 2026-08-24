@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h1 class="mb-0">Tambah Manhwa</h1>
+                        <h1 class="mb-0">Edit Manhwa</h1>
                     </div>
 
                     <div class="col-sm-6">
@@ -17,7 +17,7 @@
                                 <a href="{{ route('manhwa.index') }}">Manhwa</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Tambah
+                                Edit
                             </li>
                         </ol>
                     </div>
@@ -27,14 +27,14 @@
 
         <div class="app-content">
             <div class="container-fluid">
-
-                <form action="{{ route('manhwa.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('manhwa.update', $manhwa) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <i class="bi bi-plus-circle me-2"></i>
-                                Form Tambah Manhwa
+                                <i class="bi bi-pencil-square me-2"></i>
+                                Form Edit Manhwa
                             </h3>
                         </div>
 
@@ -44,9 +44,7 @@
                                     <label class="form-label">Judul Manhwa</label>
                                     <input type="text" name="judul" id="judul"
                                         class="form-control @error('judul') is-invalid @enderror"
-                                        value="{{ old('judul') }}"
-                                        placeholder="Masukkan judul manhwa"
-                                        autocomplete="off">
+                                        value="{{ old('judul', $manhwa->judul) }}" autocomplete="off">
                                     @error('judul')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -55,13 +53,14 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Genre</label>
                                     <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                                        @php
+                                            $selectedGenres = old('genre_ids', $manhwa->genres->pluck('id')->toArray());
+                                        @endphp
                                         @forelse ($genres as $genre)
                                             <div class="form-check">
-                                                <input type="checkbox" name="genre_ids[]"
-                                                    id="genre_{{ $genre->id }}"
-                                                    class="form-check-input"
-                                                    value="{{ $genre->id }}"
-                                                    {{ in_array($genre->id, old('genre_ids', [])) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="genre_ids[]" id="genre_{{ $genre->id }}"
+                                                    class="form-check-input" value="{{ $genre->id }}"
+                                                    {{ in_array($genre->id, $selectedGenres) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="genre_{{ $genre->id }}">
                                                     {{ $genre->nama_genre }}
                                                 </label>
@@ -79,8 +78,7 @@
                                     <label class="form-label">Penulis</label>
                                     <input type="text" name="penulis" id="penulis"
                                         class="form-control @error('penulis') is-invalid @enderror"
-                                        value="{{ old('penulis') }}"
-                                        autocomplete="off">
+                                        value="{{ old('penulis', $manhwa->penulis) }}" autocomplete="off">
                                     @error('penulis')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -90,8 +88,7 @@
                                     <label class="form-label">Ilustrator</label>
                                     <input type="text" name="ilustrator" id="ilustrator"
                                         class="form-control @error('ilustrator') is-invalid @enderror"
-                                        value="{{ old('ilustrator') }}"
-                                        autocomplete="off">
+                                        value="{{ old('ilustrator', $manhwa->ilustrator) }}" autocomplete="off">
                                     @error('ilustrator')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -101,8 +98,7 @@
                                     <label class="form-label">Tahun Terbit</label>
                                     <input type="number" name="tahun_terbit" id="tahun_terbit"
                                         class="form-control @error('tahun_terbit') is-invalid @enderror"
-                                        value="{{ old('tahun_terbit') }}"
-                                        placeholder="Contoh: 2024">
+                                        value="{{ old('tahun_terbit', $manhwa->tahun_terbit) }}">
                                     @error('tahun_terbit')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -112,15 +108,12 @@
                                     <label class="form-label">Status</label>
                                     <select name="status" id="status"
                                         class="form-select @error('status') is-invalid @enderror">
-                                        <option value="ongoing" {{ old('status') == 'ongoing' ? 'selected' : '' }}>
-                                            Ongoing
-                                        </option>
-                                        <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>
-                                            Completed
-                                        </option>
-                                        <option value="hiatus" {{ old('status') == 'hiatus' ? 'selected' : '' }}>
-                                            Hiatus
-                                        </option>
+                                        @foreach (['ongoing' => 'Ongoing', 'completed' => 'Completed', 'hiatus' => 'Hiatus'] as $value => $label)
+                                            <option value="{{ $value }}"
+                                                {{ old('status', $manhwa->status) == $value ? 'selected' : '' }}>
+                                                {{ $label }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     @error('status')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -129,19 +122,23 @@
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Cover</label>
+                                    @if ($manhwa->cover)
+                                        <div class="mb-2">
+                                            <img src="{{ asset('storage/' . $manhwa->cover) }}" alt="Cover saat ini"
+                                                style="max-height: 100px;" class="rounded border">
+                                        </div>
+                                    @endif
                                     <input type="file" name="cover" id="cover"
-                                        class="form-control @error('cover') is-invalid @enderror"
-                                        accept="image/*">
+                                        class="form-control @error('cover') is-invalid @enderror" accept="image/*">
+                                    <small class="text-muted">Kosongkan jika tidak ingin mengganti cover.</small>
                                     @error('cover')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-12 mb-3">
                                     <label class="form-label">Sinopsis</label>
-                                    <textarea name="sinopsis" id="sinopsis" rows="5"
-                                        class="form-control @error('sinopsis') is-invalid @enderror"
-                                        placeholder="Masukkan sinopsis manhwa">{{ old('sinopsis') }}</textarea>
+                                    <textarea name="sinopsis" id="sinopsis" rows="5" class="form-control @error('sinopsis') is-invalid @enderror">{{ old('sinopsis', $manhwa->sinopsis) }}</textarea>
                                     @error('sinopsis')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -156,7 +153,7 @@
                             </a>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save me-1"></i>
-                                Simpan
+                                Simpan Perubahan
                             </button>
                         </div>
                     </div>

@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('genres', function (Blueprint $table) {
+        Schema::create('chapters', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_genre')->unique();
-            $table->text('deskripsi')->nullable();
-        $table->boolean('status')->default(true);
+            $table->foreignId('manhwa_id')->constrained()->cascadeOnDelete();
+            $table->unsignedInteger('nomor_chapter');
+            $table->string('judul_chapter')->nullable();
+            $table->date('tanggal_rilis')->nullable();
             $table->timestamps();
+
+            $table->unique(['manhwa_id', 'nomor_chapter']);
         });
     }
 
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('genres');
+        Schema::dropIfExists('chapters');
     }
 };

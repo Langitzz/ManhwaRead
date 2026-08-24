@@ -3,8 +3,6 @@
 @section('title', 'Manhwa')
 
 @section('content')
-    <main class="app-main">
-
         {{-- Header --}}
         <div class="app-content-header">
             <div class="container-fluid">
@@ -45,7 +43,6 @@
                         </div>
                     </div>
 
-
                     {{-- Card Body --}}
                     <div class="card-body">
                         {{-- Search --}}
@@ -63,7 +60,6 @@
                         {{-- Table --}}
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover align-middle">
-
                                 <thead class="table-light">
                                     <tr>
                                         <th width="60">No</th>
@@ -76,24 +72,76 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td colspan="6" class="text-center py-5">
-                                            <i class="bi bi-inbox fs-1 text-secondary"></i>
-                                            <p class="text-muted mt-3 mb-0">
-                                                Belum ada data manhwa.
-                                            </p>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                    @forelse ($manhwas as $manhwa)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>
+                                                @if ($manhwa->cover)
+                                                    <img src="{{ asset('storage/' . $manhwa->cover) }}"
+                                                        alt="{{ $manhwa->judul }}"
+                                                        style="width: 60px; height: 80px; object-fit: cover;"
+                                                        class="rounded border">
+                                                @else
+                                                    <span class="text-muted small">Tidak ada</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $manhwa->judul }}
+                                                @if ($manhwa->penulis)
+                                                    <br><small class="text-muted">{{ $manhwa->penulis }}</small>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @forelse ($manhwa->genres as $genre)
+                                                    <span class="badge bg-secondary">{{ $genre->nama_genre }}</span>
+                                                @empty
+                                                    <span class="text-muted small">-</span>
+                                                @endforelse
+                                            </td>
+                                            <td>
+                                                @php
+                                                    $statusBadge = [
+                                                        'ongoing' => 'bg-success',
+                                                        'completed' => 'bg-primary',
+                                                        'hiatus' => 'bg-warning text-dark',
+                                                    ];
+                                                @endphp
+                                                <span class="badge {{ $statusBadge[$manhwa->status] }}">
+                                                    {{ ucfirst($manhwa->status) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('manhwa.edit', $manhwa) }}"
+                                                    class="btn btn-sm btn-warning">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
 
+                                                <form action="{{ route('manhwa.destroy', $manhwa) }}" method="POST"
+                                                    class="d-inline"
+                                                    onsubmit="return confirm('Yakin ingin menghapus manhwa ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5">
+                                                <i class="bi bi-inbox fs-1 text-secondary"></i>
+                                                <p class="text-muted mt-3 mb-0">
+                                                    Belum ada data manhwa.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
-
-    </main>
 @endsection

@@ -3,8 +3,6 @@
 @section('title', 'Genre')
 
 @section('content')
-    <main class="app-main">
-
         {{-- Header --}}
         <div class="app-content-header">
             <div class="container-fluid">
@@ -70,14 +68,41 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td colspan="4" class="text-center py-5">
-                                            <i class="bi bi-inbox fs-1 text-secondary"></i>
-                                            <p class="text-muted mt-3 mb-0">
-                                                Belum ada data genre.
-                                            </p>
-                                        </td>
-                                    </tr>
+                                    @forelse ($genres as $genre)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>
+                                                {{ $genre->nama_genre }}
+                                                @if (!$genre->status)
+                                                    <span class="badge bg-secondary ms-1">Nonaktif</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $genre->manhwas_count }}</td>
+                                            <td>
+                                                <a href="{{ route('genre.edit', $genre) }}" class="btn btn-sm btn-warning">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form action="{{ route('genre.destroy', $genre) }}" method="POST"
+                                                    class="d-inline"
+                                                    onsubmit="return confirm('Yakin ingin menghapus genre ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center py-5">
+                                                <i class="bi bi-inbox fs-1 text-secondary"></i>
+                                                <p class="text-muted mt-3 mb-0">
+                                                    Belum ada data genre.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -85,5 +110,4 @@
                 </div>
             </div>
         </div>
-    </main>
 @endsection

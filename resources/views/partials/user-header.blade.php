@@ -1,4 +1,4 @@
-<header id="header" class="header sticky-top">
+<header id="header" class="header">
 
     <div class="container-fluid container-xl position-relative">
 

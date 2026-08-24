@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h1 class="mb-0">Tambah Chapter</h1>
+                        <h1 class="mb-0">Edit Chapter</h1>
                     </div>
 
                     <div class="col-sm-6">
@@ -17,7 +17,7 @@
                                 <a href="{{ route('chapter.index') }}">Chapter</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Tambah
+                                Edit
                             </li>
                         </ol>
                     </div>
@@ -27,13 +27,14 @@
 
         <div class="app-content">
             <div class="container-fluid">
-                <form action="{{ route('chapter.store') }}" method="POST">
+                <form action="{{ route('chapter.update', $chapter) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <i class="bi bi-plus-circle me-2"></i>
-                                Form Tambah Chapter
+                                <i class="bi bi-pencil-square me-2"></i>
+                                Form Edit Chapter
                             </h3>
                         </div>
 
@@ -45,12 +46,9 @@
                                     </label>
                                     <select name="manhwa_id" id="manhwa_id"
                                         class="form-select @error('manhwa_id') is-invalid @enderror">
-                                        <option value="" selected disabled>
-                                            Pilih Manhwa
-                                        </option>
                                         @foreach ($manhwas as $manhwa)
                                             <option value="{{ $manhwa->id }}"
-                                                {{ old('manhwa_id') == $manhwa->id ? 'selected' : '' }}>
+                                                {{ old('manhwa_id', $chapter->manhwa_id) == $manhwa->id ? 'selected' : '' }}>
                                                 {{ $manhwa->judul }}
                                             </option>
                                         @endforeach
@@ -66,8 +64,8 @@
                                     </label>
                                     <input type="number" name="nomor_chapter" id="nomor_chapter"
                                         class="form-control @error('nomor_chapter') is-invalid @enderror"
-                                        value="{{ old('nomor_chapter') }}"
-                                        placeholder="Contoh: 1" min="1"
+                                        value="{{ old('nomor_chapter', $chapter->nomor_chapter) }}"
+                                        min="1"
                                         autocomplete="off">
                                     @error('nomor_chapter')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -80,7 +78,7 @@
                                     </label>
                                     <input type="text" name="judul_chapter" id="judul_chapter"
                                         class="form-control @error('judul_chapter') is-invalid @enderror"
-                                        value="{{ old('judul_chapter') }}"
+                                        value="{{ old('judul_chapter', $chapter->judul_chapter) }}"
                                         placeholder="Opsional"
                                         autocomplete="off">
                                     @error('judul_chapter')
@@ -94,7 +92,7 @@
                                     </label>
                                     <input type="date" name="tanggal_rilis" id="tanggal_rilis"
                                         class="form-control @error('tanggal_rilis') is-invalid @enderror"
-                                        value="{{ old('tanggal_rilis') }}">
+                                        value="{{ old('tanggal_rilis', $chapter->tanggal_rilis?->format('Y-m-d')) }}">
                                     @error('tanggal_rilis')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -109,7 +107,7 @@
                             </a>
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save me-1"></i>
-                                Simpan
+                                Simpan Perubahan
                             </button>
                         </div>
                     </div>

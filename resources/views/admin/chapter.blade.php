@@ -3,8 +3,6 @@
 @section('title', 'Chapter')
 
 @section('content')
-    <main class="app-main">
-
         {{-- Header --}}
         <div class="app-content-header">
             <div class="container-fluid">
@@ -57,11 +55,19 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <select class="form-select">
-                                    <option selected>Semua Manhwa</option>
-                                    <option>Contoh Manhwa 1</option>
-                                    <option>Contoh Manhwa 2</option>
-                                </select>
+                                <form action="{{ route('chapter.index') }}" method="GET">
+                                    <select name="manhwa_id" class="form-select" onchange="this.form.submit()">
+                                        <option value="" {{ request('manhwa_id') == '' ? 'selected' : '' }}>
+                                            Semua Manhwa
+                                        </option>
+                                        @foreach ($manhwas as $manhwa)
+                                            <option value="{{ $manhwa->id }}"
+                                                {{ request('manhwa_id') == $manhwa->id ? 'selected' : '' }}>
+                                                {{ $manhwa->judul }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </form>
                             </div>
                         </div>
 
@@ -79,24 +85,51 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td colspan="5" class="text-center py-5">
-                                            <i class="bi bi-inbox fs-1 text-secondary"></i>
-                                            <p class="text-muted mt-3 mb-0">
-                                                Belum ada data manhwa.
-                                            </p>
-                                        </td>
-                                    </tr>
+                                    @forelse ($chapters as $chapter)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $chapter->manhwa->judul }}</td>
+                                            <td>
+                                                Chapter {{ $chapter->nomor_chapter }}
+                                                @if ($chapter->judul_chapter)
+                                                    <br><small class="text-muted">{{ $chapter->judul_chapter }}</small>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                {{ $chapter->tanggal_rilis?->format('d M Y') ?? '-' }}
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('chapter.edit', $chapter) }}"
+                                                    class="btn btn-sm btn-warning">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <form action="{{ route('chapter.destroy', $chapter) }}" method="POST"
+                                                    class="d-inline"
+                                                    onsubmit="return confirm('Yakin ingin menghapus chapter ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center py-5">
+                                                <i class="bi bi-inbox fs-1 text-secondary"></i>
+                                                <p class="text-muted mt-3 mb-0">
+                                                    Belum ada data chapter.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
-
                             </table>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
-
     </main>
 @endsection

@@ -1,7 +1,16 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\HakAksesController;
+use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\LogAktivitasController;
+use App\Http\Controllers\ManhwaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,30 +31,80 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', [AdminController::class, 'index'])
             ->name('admin');
-        Route::view('/manhwa', 'admin.manhwa')
+
+        // Manhwa
+        Route::get('/manhwa', [ManhwaController::class, 'index'])
             ->name('manhwa.index');
-        Route::view('/manhwa/create', 'admin.manhwa-create')
+        Route::get('/manhwa/create', [ManhwaController::class, 'create'])
             ->name('manhwa.create');
-        Route::view('/genre', 'admin.genre')
+        Route::post('/manhwa', [ManhwaController::class, 'store'])
+            ->name('manhwa.store');
+        Route::get('/manhwa/{manhwa}/edit', [ManhwaController::class, 'edit'])
+            ->name('manhwa.edit');
+        Route::put('/manhwa/{manhwa}', [ManhwaController::class, 'update'])
+            ->name('manhwa.update');
+        Route::delete('/manhwa/{manhwa}', [ManhwaController::class, 'destroy'])
+            ->name('manhwa.destroy');
+
+        // Genre
+        Route::get('/genre', [GenreController::class, 'index'])
             ->name('genre.index');
-        Route::view('/genre/create', 'admin.genre-create')
+        Route::get('/genre/create', [GenreController::class, 'create'])
             ->name('genre.create');
-        Route::view('/chapter', 'admin.chapter')
+        Route::post('/genre', [GenreController::class, 'store'])
+            ->name('genre.store');
+        Route::get('/genre/{genre}/edit', [GenreController::class, 'edit'])
+            ->name('genre.edit');
+        Route::put('/genre/{genre}', [GenreController::class, 'update'])
+            ->name('genre.update');
+        Route::delete('/genre/{genre}', [GenreController::class, 'destroy'])
+            ->name('genre.destroy');
+
+        // Chapter
+        Route::get('/chapter', [ChapterController::class, 'index'])
             ->name('chapter.index');
-        Route::view('/chapter/create', 'admin.chapter-create')
+        Route::get('/chapter/create', [ChapterController::class, 'create'])
             ->name('chapter.create');
-        Route::view('/aktivitas', 'admin.aktivitas')
-            ->name('aktivitas.index');
-        Route::view('/komentar', 'admin.komentar')
+        Route::post('/chapter', [ChapterController::class, 'store'])
+            ->name('chapter.store');
+        Route::get('/chapter/{chapter}/edit', [ChapterController::class, 'edit'])
+            ->name('chapter.edit');
+        Route::put('/chapter/{chapter}', [ChapterController::class, 'update'])
+            ->name('chapter.update');
+        Route::delete('/chapter/{chapter}', [ChapterController::class, 'destroy'])
+            ->name('chapter.destroy');
+
+        // Komentar
+        Route::get('/komentar', [KomentarController::class, 'index'])
             ->name('komentar.index');
-        Route::view('/komentar/detail', 'admin.komentar-detail')
+        Route::get('/komentar/{komentar}', [KomentarController::class, 'show'])
             ->name('komentar.detail');
-        Route::view('/bookmark', 'admin.bookmark')
+        Route::patch('/komentar/{komentar}/toggle-status', [KomentarController::class, 'toggleStatus'])
+            ->name('komentar.toggle-status');
+        Route::delete('/komentar/{komentar}', [KomentarController::class, 'destroy'])
+            ->name('komentar.destroy');
+
+        // Bookmark
+        Route::get('/bookmark', [BookmarkController::class, 'index'])
             ->name('bookmark.index');
-        Route::view('/riwayat', 'admin.riwayat')
+        Route::delete('/bookmark/{bookmark}', [BookmarkController::class, 'destroy'])
+            ->name('bookmark.destroy');
+
+        // Riwayat
+        Route::get('/riwayat', [RiwayatController::class, 'index'])
             ->name('riwayat.index');
-        Route::view('/users', 'admin.users')
+        Route::delete('/riwayat/{riwayat}', [RiwayatController::class, 'destroy'])
+            ->name('riwayat.destroy');
+
+        // Users
+        Route::get('/users', [AdminUserController::class, 'index'])
             ->name('user.index');
+        Route::put('/users/{user}', [AdminUserController::class, 'update'])
+            ->name('user.update');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])
+            ->name('user.destroy');
+
+        // Role User
         Route::get('/role-user', [RoleController::class, 'index'])
             ->name('admin.user.index');
         Route::post('/role-user', [RoleController::class, 'store'])
@@ -54,9 +113,15 @@ Route::prefix('admin')
             ->name('admin.user.update');
         Route::delete('/role-user/{role}', [RoleController::class, 'destroy'])
             ->name('admin.user.destroy');
-        Route::view('/hak-akses', 'admin.hak-akses')
+
+        // Hak Akses
+        Route::get('/hak-akses', [HakAksesController::class, 'index'])
             ->name('admin.access.index');
-        Route::view('/log-aktivitas', 'admin.log-aktivitas')
+        Route::put('/hak-akses/{role}', [HakAksesController::class, 'update'])
+            ->name('admin.access.update');
+
+        // Log Aktivitas
+        Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])
             ->name('admin.log.index');
     });
 

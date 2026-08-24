@@ -3,59 +3,81 @@
 @section('title', 'Riwayat Baca')
 
 @section('content')
-    <main class="app-main">
-        <div class="app-content-header">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <h1 class="mb-0">Riwayat Baca</h1>
-                    </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-end">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('admin') }}">Home</a>
-                            </li>
-                            <li class="breadcrumb-item active">
-                                Riwayat Baca
-                            </li>
-                        </ol>
-                    </div>
+    <div class="app-content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1 class="mb-0">Riwayat Baca</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-end">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('admin') }}">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Riwayat Baca
+                        </li>
+                    </ol>
                 </div>
             </div>
         </div>
-        <div class="app-content">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="bi bi-clock-history me-2"></i>
-                            Data Riwayat Baca
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Cari riwayat baca...">
-                                    <button class="btn btn-outline-secondary">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
+    </div>
+
+    <div class="app-content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="bi bi-clock-history me-2"></i>
+                        Data Riwayat Baca
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('riwayat.index') }}" method="GET" class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" name="cari" class="form-control" placeholder="Cari riwayat baca..."
+                                    value="{{ request('cari') }}">
+                                <button type="submit" class="btn btn-outline-secondary">
+                                    <i class="bi bi-search"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover align-middle">
-                                <thead class="table-light">
+                    </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="70">No</th>
+                                    <th>User</th>
+                                    <th>Manhwa</th>
+                                    <th>Chapter Terakhir</th>
+                                    <th width="180">Terakhir Dibaca</th>
+                                    <th width="140">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($riwayats as $riwayat)
                                     <tr>
-                                        <th width="70">No</th>
-                                        <th>User</th>
-                                        <th>Manhwa</th>
-                                        <th>Chapter Terakhir</th>
-                                        <th width="180">Terakhir Dibaca</th>
-                                        <th width="140">Aksi</th>
+                                        <td>{{ $loop->iteration + ($riwayats->currentPage() - 1) * $riwayats->perPage() }}
+                                        </td>
+                                        <td>{{ $riwayat->user->name }}</td>
+                                        <td>{{ $riwayat->manhwa->judul }}</td>
+                                        <td>Chapter {{ $riwayat->chapter->nomor_chapter }}</td>
+                                        <td>{{ $riwayat->updated_at->format('d M Y, H:i') }}</td>
+                                        <td>
+                                            <form action="{{ route('riwayat.destroy', $riwayat) }}" method="POST"
+                                                onsubmit="return confirm('Yakin ingin menghapus riwayat ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                @empty
                                     <tr>
                                         <td colspan="6" class="text-center py-5">
                                             <i class="bi bi-inbox fs-1 text-secondary"></i>
@@ -64,12 +86,13 @@
                                             </p>
                                         </td>
                                     </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
+                    {{ $riwayats->links() }}
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 @endsection
