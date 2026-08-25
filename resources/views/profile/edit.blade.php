@@ -15,9 +15,8 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('admin') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item active">
-                            Profil Saya
-                        </li>
+                        <li class="breadcrumb-item">Pengaturan</li>
+                        <li class="breadcrumb-item active">Profil</li>
                     </ol>
                 </div>
             </div>
@@ -25,11 +24,6 @@
     </div>
 
     <style>
-        .profile-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
         .profile-card {
             background: #1f2937;
             border: 1px solid #374151;
@@ -37,6 +31,7 @@
             padding: 30px;
             margin-bottom: 24px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, .25);
+            height: 100%;
         }
 
         .profile-title {
@@ -52,106 +47,117 @@
             font-size: 14px;
         }
 
-        .profile-info {
-            text-align: center;
-        }
-
         .profile-photo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 18px;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 16px;
             border-radius: 50%;
             object-fit: cover;
             display: block;
             border: 4px solid #374151;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .35);
         }
 
         .profile-name {
             margin: 0;
-            font-size: 21px;
+            font-size: 19px;
             font-weight: 700;
             color: #f8fafc;
         }
 
-        .profile-email {
-            margin: 6px 0 0;
+        .profile-role {
+            margin: 4px 0 12px;
             color: #94a3b8;
             font-size: 14px;
+        }
+
+        .profile-info-list {
+            border-top: 1px solid #374151;
+            margin-top: 18px;
+            padding-top: 18px;
+            text-align: left;
+        }
+
+        .profile-info-list dt {
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .profile-info-list dd {
+            color: #f8fafc;
+            font-size: 14px;
+            margin-bottom: 12px;
         }
 
         .profile-card label {
             color: #e5e7eb !important;
         }
 
-        .profile-card input {
+        .profile-card input,
+        .profile-card textarea {
             background: #111827 !important;
             color: #f8fafc !important;
             border-color: #4b5563 !important;
         }
 
-        .profile-card input:focus {
+        .profile-card input:focus,
+        .profile-card textarea:focus {
             border-color: #3b82f6 !important;
             box-shadow: 0 0 0 2px rgba(59, 130, 246, .2);
         }
 
-        .profile-card button {
-            border-radius: 8px;
+        [x-cloak] {
+            display: none !important;
         }
     </style>
 
     <div class="app-content">
         <div class="container-fluid">
-            <div class="profile-container">
+            <div class="row">
+                {{-- Kolom Kiri: Foto & Ringkasan --}}
+                <div class="col-lg-4">
+                    <div class="profile-card text-center">
+                        <img src="{{ asset('images/admin/mbg.jpeg') }}" alt="Foto Profil" class="profile-photo">
+                        <h3 class="profile-name">{{ Auth::user()->name }}</h3>
+                        <p class="profile-role">
+                            {{ Auth::user()->userRole->nama_peran ?? '-' }}
+                        </p>
 
-                {{-- Foto & Identitas --}}
-                <div class="profile-card profile-info">
-                    <img src="{{ asset('images/admin/mbg.jpeg') }}" alt="Foto Profil" class="profile-photo">
-                    <h3 class="profile-name">
-                        {{ Auth::user()->name }}
-                    </h3>
-                    <p class="profile-email">
-                        {{ Auth::user()->email }}
-                    </p>
+                        @if (Auth::user()->status)
+                            <span class="badge bg-success">Aktif</span>
+                        @else
+                            <span class="badge bg-secondary">Nonaktif</span>
+                        @endif
+
+                        <dl class="profile-info-list">
+                            <dt>Email</dt>
+                            <dd>{{ Auth::user()->email }}</dd>
+                            <dt>Role</dt>
+                            <dd>{{ Auth::user()->userRole->nama_peran ?? '-' }}</dd>
+                            <dt>Bergabung</dt>
+                            <dd>{{ Auth::user()->created_at->translatedFormat('F Y') }}</dd>
+                        </dl>
+                    </div>
                 </div>
 
-                {{-- Informasi Profil --}}
-                <div class="profile-card">
-                    <div style="margin-bottom:25px;">
-                        <h3 class="profile-title">
-                            Informasi Profil
-                        </h3>
-                        <p class="profile-description">
-                            Perbarui nama dan alamat email akun Anda.
-                        </p>
+                {{-- Kolom Kanan: Form (1 kartu, 3 bagian) --}}
+                <div class="col-lg-8">
+                    <div class="profile-card">
+                        {{-- Bagian: Informasi Profil --}}
+                        <div style="margin-bottom:25px;">
+                            <h3 class="profile-title">Informasi Profil</h3>
+                            <p class="profile-description">
+                                Perbarui nama, email, nomor telepon, dan alamat Anda.
+                            </p>
+                        </div>
+                        @include('profile.partials.update-profile-information-form')
+                        <hr style="border-color:#374151; margin:28px 0;">
+                        {{-- Bagian: Ubah Password --}}
+                        @include('profile.partials.update-password-form')
+                        <hr style="border-color:#374151; margin:28px 0;">
+                        {{-- Bagian: Hapus Akun --}}
+                        @include('profile.partials.delete-user-form')
                     </div>
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-
-                {{-- Password --}}
-                <div class="profile-card">
-                    <div style="margin-bottom:25px;">
-                        <h3 class="profile-title">
-                            Ubah Password
-                        </h3>
-                        <p class="profile-description">
-                            Pastikan akun Anda menggunakan password yang kuat.
-                        </p>
-                    </div>
-                    @include('profile.partials.update-password-form')
-                </div>
-
-                {{-- Hapus Akun --}}
-                <div class="profile-card">
-                    <div style="margin-bottom:25px;">
-                        <h3 style="margin:0; font-size:20px; font-weight:700; color:#f87171;">
-                            Hapus Akun
-                        </h3>
-                        <p class="profile-description">
-                            Hapus akun Anda secara permanen beserta seluruh datanya.
-                        </p>
-                    </div>
-                    @include('profile.partials.delete-user-form')
                 </div>
             </div>
         </div>
