@@ -17,6 +17,6 @@ class LogAktivitasController extends Controller
             ->latest()
             ->paginate(20);
 
-        return view('admin.log-aktivitas', compact('logs'));
+        return view('admin.log-aktivitas.index', compact('logs'));
     }
 }

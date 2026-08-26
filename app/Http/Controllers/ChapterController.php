@@ -21,21 +21,21 @@ class ChapterController extends Controller
 
         $manhwas = Manhwa::orderBy('judul')->get();
 
-        return view('admin.chapter', compact('chapters', 'manhwas'));
+        return view('admin.chapter.index', compact('chapters', 'manhwas'));
     }
 
     public function create()
     {
         $manhwas = Manhwa::orderBy('judul')->get();
 
-        return view('admin.chapter-create', compact('manhwas'));
+        return view('admin.chapter.create', compact('manhwas'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'manhwa_id' => 'required|exists:manhwas,id',
-            'nomor_chapter' => 'required|integer|min:1|unique:chapters,nomor_chapter,NULL,id,manhwa_id,'.$request->manhwa_id,
+            'nomor_chapter' => 'required|integer|min:1|unique:chapters,nomor_chapter,NULL,id,manhwa_id,' . $request->manhwa_id,
             'judul_chapter' => 'nullable|string|max:255',
             'tanggal_rilis' => 'nullable|date',
         ]);
@@ -53,14 +53,14 @@ class ChapterController extends Controller
     {
         $manhwas = Manhwa::orderBy('judul')->get();
 
-        return view('admin.chapter-edit', compact('chapter', 'manhwas'));
+        return view('admin.chapter.edit', compact('chapter', 'manhwas'));
     }
 
     public function update(Request $request, Chapter $chapter)
     {
         $data = $request->validate([
             'manhwa_id' => 'required|exists:manhwas,id',
-            'nomor_chapter' => 'required|integer|min:1|unique:chapters,nomor_chapter,'.$chapter->id.',id,manhwa_id,'.$request->manhwa_id,
+            'nomor_chapter' => 'required|integer|min:1|unique:chapters,nomor_chapter,' . $chapter->id . ',id,manhwa_id,' . $request->manhwa_id,
             'judul_chapter' => 'nullable|string|max:255',
             'tanggal_rilis' => 'nullable|date',
         ]);

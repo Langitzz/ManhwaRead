@@ -14,14 +14,14 @@ class ManhwaController extends Controller
     {
         $manhwas = Manhwa::with('genres')->orderBy('judul')->get();
 
-        return view('admin.manhwa', compact('manhwas'));
+        return view('admin.manhwa.index', compact('manhwas'));
     }
 
     public function create()
     {
         $genres = Genre::orderBy('nama_genre')->get();
 
-        return view('admin.manhwa-create', compact('genres'));
+        return view('admin.manhwa.create', compact('genres'));
     }
 
     public function store(Request $request)
@@ -59,7 +59,7 @@ class ManhwaController extends Controller
     {
         $genres = Genre::orderBy('nama_genre')->get();
 
-        return view('admin.manhwa-edit', compact('manhwa', 'genres'));
+        return view('admin.manhwa.edit', compact('manhwa', 'genres'));
     }
 
     public function update(Request $request, Manhwa $manhwa)

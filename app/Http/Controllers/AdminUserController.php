@@ -14,36 +14,36 @@ class AdminUserController extends Controller
         $users = User::with('userRole')->orderBy('name')->get();
         $roles = Role::orderBy('nama_peran')->get();
 
-        return view('admin.users', compact('users', 'roles'));
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     public function update(Request $request, User $user)
-{
-    $data = $request->validate([
-        'role_id' => 'required|exists:roles,id',
-    ]);
+    {
+        $data = $request->validate([
+            'role_id' => 'required|exists:roles,id',
+        ]);
 
-    $data['status'] = $request->boolean('status');
+        $data['status'] = $request->boolean('status');
 
-    $user->update($data);
+        $user->update($data);
 
-    ActivityLog::catat('Mengubah User', "User: {$user->name}");
+        ActivityLog::catat('Mengubah User', "User: {$user->name}");
 
-    return redirect()
-        ->route('user.index')
-        ->with('success', 'Data user berhasil diperbarui.');
-}
+        return redirect()
+            ->route('user.index')
+            ->with('success', 'Data user berhasil diperbarui.');
+    }
 
     public function destroy(User $user)
-{
-    $namaUser = $user->name;
+    {
+        $namaUser = $user->name;
 
-    $user->delete();
+        $user->delete();
 
-    ActivityLog::catat('Menghapus User', "User: {$namaUser}");
+        ActivityLog::catat('Menghapus User', "User: {$namaUser}");
 
-    return redirect()
-        ->route('user.index')
-        ->with('success', 'User berhasil dihapus.');
-}
+        return redirect()
+            ->route('user.index')
+            ->with('success', 'User berhasil dihapus.');
+    }
 }

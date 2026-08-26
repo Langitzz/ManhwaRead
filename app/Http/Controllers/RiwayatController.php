@@ -19,7 +19,7 @@ class RiwayatController extends Controller
             ->latest('updated_at')
             ->paginate(20);
 
-        return view('admin.riwayat', compact('riwayats'));
+        return view('admin.riwayat.index', compact('riwayats'));
     }
 
     public function destroy(ReadingHistory $riwayat)

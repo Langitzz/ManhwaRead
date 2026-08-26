@@ -13,13 +13,13 @@ class BookmarkController extends Controller
         $bookmarks = Bookmark::with(['user', 'manhwa'])
             ->when($request->filled('cari'), function ($query) use ($request) {
                 $query->whereHas('manhwa', function ($q) use ($request) {
-                    $q->where('judul', 'like', '%'.$request->cari.'%');
+                    $q->where('judul', 'like', '%' . $request->cari . '%');
                 });
             })
             ->latest()
             ->paginate(20);
 
-        return view('admin.bookmark', compact('bookmarks'));
+        return view('admin.bookmark.index', compact('bookmarks'));
     }
 
     public function destroy(Bookmark $bookmark)

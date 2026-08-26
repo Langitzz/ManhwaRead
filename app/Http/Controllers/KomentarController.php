@@ -12,17 +12,17 @@ class KomentarController extends Controller
     {
         $comments = Comment::with(['user', 'manhwa'])
             ->when($request->filled('cari'), function ($query) use ($request) {
-                $query->where('isi', 'like', '%'.$request->cari.'%');
+                $query->where('isi', 'like', '%' . $request->cari . '%');
             })
             ->latest()
             ->paginate(20);
 
-        return view('admin.komentar', compact('comments'));
+        return view('admin.komentar.index', compact('comments'));
     }
 
     public function show(Comment $komentar)
     {
-        return view('admin.komentar-detail', ['comment' => $komentar]);
+        return view('admin.komentar.detail', ['comment' => $komentar]);
     }
 
     public function toggleStatus(Comment $komentar)

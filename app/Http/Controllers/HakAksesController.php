@@ -19,7 +19,7 @@ class HakAksesController extends Controller
             $matrix[$role->id] = $role->permissions()->pluck('permissions.id')->toArray();
         }
 
-        return view('admin.hak-akses', compact('roles', 'permissions', 'matrix'));
+        return view('admin.hak-akses.index', compact('roles', 'permissions', 'matrix'));
     }
 
     public function update(Request $request, Role $role)

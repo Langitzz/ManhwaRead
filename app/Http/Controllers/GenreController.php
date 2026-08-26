@@ -12,12 +12,12 @@ class GenreController extends Controller
     {
         $genres = Genre::withCount('manhwas')->orderBy('nama_genre')->get();
 
-        return view('admin.genre', compact('genres'));
+        return view('admin.genre.index', compact('genres'));
     }
 
     public function create()
     {
-        return view('admin.genre-create');
+        return view('admin.genre.create');
     }
 
     public function store(Request $request)
@@ -39,13 +39,13 @@ class GenreController extends Controller
 
     public function edit(Genre $genre)
     {
-        return view('admin.genre-edit', compact('genre'));
+        return view('admin.genre.edit', compact('genre'));
     }
 
     public function update(Request $request, Genre $genre)
     {
         $data = $request->validate([
-            'nama_genre' => 'required|string|max:255|unique:genres,nama_genre,'.$genre->id,
+            'nama_genre' => 'required|string|max:255|unique:genres,nama_genre,' . $genre->id,
             'deskripsi' => 'nullable|string',
             'status' => 'nullable|boolean',
         ]);
