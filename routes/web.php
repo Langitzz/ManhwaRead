@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\ChapterPageController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\KomentarController;
@@ -73,6 +74,14 @@ Route::prefix('admin')
             ->name('chapter.update');
         Route::delete('/chapter/{chapter}', [ChapterController::class, 'destroy'])
             ->name('chapter.destroy');
+
+        // Chapter Pages
+        Route::get('/chapter/{chapter}/pages', [ChapterPageController::class, 'index'])
+            ->name('chapter.pages.index');
+        Route::post('/chapter/{chapter}/pages', [ChapterPageController::class, 'store'])
+            ->name('chapter.pages.store');
+        Route::delete('/chapter-pages/{chapterPage}', [ChapterPageController::class, 'destroy'])
+            ->name('chapter.pages.destroy');
 
         // Komentar
         Route::get('/komentar', [KomentarController::class, 'index'])

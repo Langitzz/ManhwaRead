@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'manhwa_id',
@@ -24,5 +25,10 @@ class Chapter extends Model
     public function manhwa(): BelongsTo
     {
         return $this->belongsTo(Manhwa::class);
+    }
+
+    public function pages(): HasMany
+    {
+        return $this->hasMany(ChapterPage::class)->orderBy('nomor_halaman');
     }
 }
