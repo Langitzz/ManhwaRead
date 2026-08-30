@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'judul',
+    'judul_alternatif',
     'slug',
     'penulis',
     'ilustrator',
@@ -16,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'sinopsis',
     'cover',
     'status',
+    'rating',
+    'views',
 ])]
 class Manhwa extends Model
 {
@@ -27,5 +30,10 @@ class Manhwa extends Model
     public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
+    }
+
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(Bookmark::class);
     }
 }

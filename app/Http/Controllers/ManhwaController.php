@@ -28,12 +28,14 @@ class ManhwaController extends Controller
     {
         $data = $request->validate([
             'judul' => 'required|string|max:255',
+            'judul_alternatif' => 'nullable|string',
             'penulis' => 'nullable|string|max:255',
             'ilustrator' => 'nullable|string|max:255',
             'tahun_terbit' => 'nullable|digits:4|integer',
             'sinopsis' => 'nullable|string',
             'cover' => 'nullable|image|max:2048',
             'status' => 'required|in:ongoing,completed,hiatus',
+            'rating' => 'nullable|numeric|min:0|max:10',
             'genre_ids' => 'nullable|array',
             'genre_ids.*' => 'exists:genres,id',
         ]);
@@ -66,12 +68,14 @@ class ManhwaController extends Controller
     {
         $data = $request->validate([
             'judul' => 'required|string|max:255',
+            'judul_alternatif' => 'nullable|string',
             'penulis' => 'nullable|string|max:255',
             'ilustrator' => 'nullable|string|max:255',
             'tahun_terbit' => 'nullable|digits:4|integer',
             'sinopsis' => 'nullable|string',
             'cover' => 'nullable|image|max:2048',
             'status' => 'required|in:ongoing,completed,hiatus',
+            'rating' => 'nullable|numeric|min:0|max:10',
             'genre_ids' => 'nullable|array',
             'genre_ids.*' => 'exists:genres,id',
         ]);

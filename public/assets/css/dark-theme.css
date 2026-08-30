@@ -1,0 +1,17 @@
+/* Dark theme override untuk tema Blogy (ManhwaRead) */
+:root {
+    --background-color: #0e0e10;
+    --default-color: #e4e6eb;
+    --heading-color: #ffffff;
+    --surface-color: #1a1a1d;
+    --contrast-color: #ffffff;
+}
+
+:root {
+    --nav-color: #e4e6eb;
+    --nav-hover-color: var(--accent-color);
+    --nav-mobile-background-color: #1a1a1d;
+    --nav-dropdown-background-color: #1a1a1d;
+    --nav-dropdown-color: #e4e6eb;
+    --nav-dropdown-hover-color: var(--accent-color);
+}

@@ -29,5 +29,8 @@
     <!-- Main CSS -->
     <link href="{{ asset('assets/blogy/assets/css/main.css') }}" rel="stylesheet">
 
+    <!-- Dark Theme Override -->
+    <link href="{{ asset('assets/css/dark-theme.css') }}" rel="stylesheet">
+
     @stack('styles')
 </head>
