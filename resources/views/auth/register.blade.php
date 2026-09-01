@@ -39,26 +39,41 @@
         <!-- Password -->
         <div style="margin-bottom:20px;">
             <x-input-label for="password" value="Password" />
-            <input id="password" type="password" name="password" required autocomplete="new-password"
-                class="form-control" placeholder="Masukkan password"
-                style="
-                margin-top:8px;
-                height:50px;
-                border-radius:12px;
-            ">
+            <div class="position-relative" style="margin-top:8px;">
+                <input id="password" type="password" name="password" required autocomplete="new-password"
+                    class="form-control" placeholder="Masukkan password"
+                    style="
+                    height:50px;
+                    border-radius:12px;
+                    padding-right:45px;
+                ">
+                <button type="button"
+                    class="toggle-password btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0"
+                    data-target="password" style="background:none; color:#94a3b8; width:30px; height:30px;">
+                    <i class="bi bi-eye toggle-password-icon"></i>
+                </button>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Confirm Password -->
         <div style="margin-bottom:20px;">
             <x-input-label for="password_confirmation" value="Konfirmasi Password" />
-            <input id="password_confirmation" type="password" name="password_confirmation" required
-                autocomplete="new-password" class="form-control" placeholder="Ulangi password"
-                style="
-                margin-top:8px;
-                height:50px;
-                border-radius:12px;
-            ">
+            <div class="position-relative" style="margin-top:8px;">
+                <input id="password_confirmation" type="password" name="password_confirmation" required
+                    autocomplete="new-password" class="form-control" placeholder="Ulangi password"
+                    style="
+                    height:50px;
+                    border-radius:12px;
+                    padding-right:45px;
+                ">
+                <button type="button"
+                    class="toggle-password btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0"
+                    data-target="password_confirmation"
+                    style="background:none; color:#94a3b8; width:30px; height:30px;">
+                    <i class="bi bi-eye toggle-password-icon"></i>
+                </button>
+            </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
@@ -74,4 +89,20 @@
             </div>
         </div>
     </form>
+
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('.toggle-password-icon');
+                const isPassword = input.type === 'password';
+
+                input.type = isPassword ? 'text' : 'password';
+                icon.classList.toggle('bi-eye', !isPassword);
+                icon.classList.toggle('bi-eye-slash', isPassword);
+            });
+        });
+    </script>
 </x-guest-layout>
+    

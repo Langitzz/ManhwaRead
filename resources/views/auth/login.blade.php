@@ -31,10 +31,17 @@
                 {{-- Password --}}
                 <div class="mb-3">
                     <x-input-label for="password" value="Password" class="text-light" />
-                    <input id="password" type="password" name="password" required autocomplete="current-password"
-                        class="form-control" placeholder="Masukkan password"
-                        style="margin-top:8px; height:50px; border-radius:12px; background:#111827;
-                            color:#f8fafc; border-color:#4b5563;">
+                    <div class="position-relative" style="margin-top:8px;">
+                        <input id="password" type="password" name="password" required
+                            autocomplete="current-password" class="form-control" placeholder="Masukkan password"
+                            style="height:50px; border-radius:12px; background:#111827;
+                                color:#f8fafc; border-color:#4b5563; padding-right:45px;">
+                        <button type="button" id="toggle-password"
+                            class="btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0"
+                            style="background:none; color:#94a3b8; width:30px; height:30px;">
+                            <i class="bi bi-eye" id="toggle-password-icon"></i>
+                        </button>
+                    </div>
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
@@ -57,7 +64,7 @@
 
                 <button type="submit" class="btn btn-primary w-100"
                     style="border-radius:50px; height:50px; font-weight:600;">
-                    <i class="fas fa-sign-in-alt me-1"></i>
+                    <i class="bi bi-box-arrow-in-right me-1"></i>
                     Login
                 </button>
 
@@ -75,5 +82,17 @@
 
         </div>
     </div>
+
+    <script>
+        document.getElementById('toggle-password').addEventListener('click', function() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('toggle-password-icon');
+            const isPassword = input.type === 'password';
+
+            input.type = isPassword ? 'text' : 'password';
+            icon.classList.toggle('bi-eye', !isPassword);
+            icon.classList.toggle('bi-eye-slash', isPassword);
+        });
+    </script>
 
 </x-guest-layout>

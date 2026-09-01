@@ -11,8 +11,11 @@
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700">
 
-    <!-- Font Awesome --> 
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('assets/adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="{{ asset('assets/blogy/assets/vendor/bootstrap-icons/bootstrap-icons.min.css') }}">
 
     <!-- AdminLTE -->
     <link rel="stylesheet" href="{{ asset('assets/adminlte/dist/css/adminlte.min.css') }}">
