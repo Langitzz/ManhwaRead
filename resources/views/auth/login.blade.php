@@ -18,22 +18,22 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                {{-- Email --}}
+                {{-- Email / Username --}}
                 <div class="mb-3">
-                    <x-input-label for="email" value="Email" class="text-light" />
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                        autocomplete="username" class="form-control" placeholder="Masukkan email"
+                    <x-input-label for="login" value="Email atau Username" class="text-light" />
+                    <input id="login" type="text" name="login" value="{{ old('login') }}" required autofocus
+                        autocomplete="username" class="form-control" placeholder="Masukkan email atau username"
                         style="margin-top:8px; height:50px; border-radius:12px; background:#111827;
                             color:#f8fafc; border-color:#4b5563;">
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <x-input-error :messages="$errors->get('login')" class="mt-2" />
                 </div>
 
                 {{-- Password --}}
                 <div class="mb-3">
                     <x-input-label for="password" value="Password" class="text-light" />
                     <div class="position-relative" style="margin-top:8px;">
-                        <input id="password" type="password" name="password" required
-                            autocomplete="current-password" class="form-control" placeholder="Masukkan password"
+                        <input id="password" type="password" name="password" required autocomplete="current-password"
+                            class="form-control" placeholder="Masukkan password"
                             style="height:50px; border-radius:12px; background:#111827;
                                 color:#f8fafc; border-color:#4b5563; padding-right:45px;">
                         <button type="button" id="toggle-password"

@@ -67,8 +67,7 @@
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
 
-                    <img src="{{ asset('images/admin/mbg.jpeg') }}" class="user-image rounded-circle shadow"
-                        alt="User">
+                    <x-foto-profil :user="Auth::user()" size="30" />
 
                     <span class="d-none d-md-inline">
                         {{ Auth::user()->name }}
@@ -79,8 +78,7 @@
 
                     <li class="user-header text-bg-primary">
 
-                        <img src="{{ asset('images/admin/mbg.jpeg') }}" class="rounded-circle shadow"
-                            alt="User">
+                        <x-foto-profil :user="Auth::user()" size="60" />
 
                         <p>
                             {{ Auth::user()->name }}

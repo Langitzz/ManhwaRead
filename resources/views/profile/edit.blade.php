@@ -117,7 +117,7 @@
                 {{-- Kolom Kiri: Foto & Ringkasan --}}
                 <div class="col-lg-4">
                     <div class="profile-card text-center">
-                        <img src="{{ asset('images/admin/mbg.jpeg') }}" alt="Foto Profil" class="profile-photo">
+                        <x-foto-profil :user="Auth::user()" size="120" />
                         <h3 class="profile-name">{{ Auth::user()->name }}</h3>
                         <p class="profile-role">
                             {{ Auth::user()->userRole->nama_peran ?? '-' }}

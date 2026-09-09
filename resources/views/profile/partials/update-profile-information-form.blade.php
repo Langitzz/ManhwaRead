@@ -3,8 +3,18 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data">
         @csrf
+        {{-- Foto Profil --}}
+        <div class="mb-3">
+            <x-input-label for="foto_profil" value="Foto Profil" style="color:#e2e8f0; font-size:13px;" />
+            <div class="d-flex align-items-center gap-3" style="margin-top:6px;">
+                <x-foto-profil :user="Auth::user()" size="56" />
+                <input id="foto_profil" name="foto_profil" type="file" accept="image/*"
+                    style="color:#e2e8f0; font-size:13px;">
+            </div>
+            <x-input-error class="mt-2" :messages="$errors->get('foto_profil')" />
+        </div>
         @method('patch')
         <div class="row">
             {{-- Nama Lengkap --}}
@@ -16,6 +26,17 @@
                         background:#111827; border:1px solid #374151; color:#f8fafc;"
                     :value="old('name', $user->name)" required autofocus autocomplete="name" />
                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            </div>
+
+            {{-- Username --}}
+            <div class="col-md-6 mb-3">
+                <x-input-label for="username" value="Username" style="color:#e2e8f0; font-size:13px;" />
+                <x-text-input id="username" name="username" type="text"
+                    style="width:100%; margin-top:6px; height:38px; border-radius:10px;
+                        padding:0 14px; font-size:13px;
+                        background:#111827; border:1px solid #374151; color:#f8fafc;"
+                    :value="old('username', $user->username)" autocomplete="username" placeholder="Opsional, contoh: budi123" />
+                <x-input-error class="mt-2" :messages="$errors->get('username')" />
             </div>
 
             {{-- Email --}}

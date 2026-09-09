@@ -44,14 +44,15 @@
 
                 @auth
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i>
+                        <button class="btn btn-primary dropdown-toggle d-flex align-items-center gap-2" type="button"
+                            data-bs-toggle="dropdown">
+                            <x-foto-profil :user="Auth::user()" size="28" />
                             {{ Auth::user()->name }}
                         </button>
 
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     Profile
                                 </a>
                             </li>
