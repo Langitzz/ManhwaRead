@@ -12,7 +12,9 @@ class AdminMiddleware
      * Pemetaan awalan nama route ke key Permission (grup menu).
      */
     protected array $routeToPermission = [
-        'admin' => 'dashboard',
+        'admin.user.' => 'admin',
+        'admin.access.' => 'admin',
+        'admin.log.' => 'admin',
         'genre.' => 'master_data',
         'manhwa.' => 'master_data',
         'chapter.' => 'master_data',
@@ -20,9 +22,7 @@ class AdminMiddleware
         'bookmark.' => 'aktivitas',
         'riwayat.' => 'aktivitas',
         'user.' => 'user',
-        'admin.user.' => 'admin',
-        'admin.access.' => 'admin',
-        'admin.log.' => 'admin',
+        'admin' => 'dashboard',
     ];
 
     public function handle(Request $request, Closure $next): Response

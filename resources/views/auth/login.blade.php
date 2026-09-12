@@ -37,8 +37,8 @@
                             style="height:50px; border-radius:12px; background:#111827;
                                 color:#f8fafc; border-color:#4b5563; padding-right:45px;">
                         <button type="button" id="toggle-password"
-                            class="btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0"
-                            style="background:none; color:#94a3b8; width:30px; height:30px;">
+                            style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
+                                background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
                             <i class="bi bi-eye" id="toggle-password-icon"></i>
                         </button>
                     </div>

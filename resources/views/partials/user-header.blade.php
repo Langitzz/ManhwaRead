@@ -52,7 +52,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                <a class="dropdown-item" href="{{ route('akun.edit') }}">
                                     Profile
                                 </a>
                             </li>

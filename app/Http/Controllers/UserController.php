@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chapter;
+use App\Models\ChapterRead;
 use App\Models\Genre;
 use App\Models\Manhwa;
+use App\Models\ReadingHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,12 +36,67 @@ class UserController extends Controller
             ? $manhwa->bookmarks()->where('user_id', Auth::id())->exists()
             : false;
 
-        return view('user.manhwa-detail', compact('manhwa', 'jumlahBookmark', 'sudahBookmark'));
+        $riwayatBaca = Auth::check()
+            ? ReadingHistory::where('user_id', Auth::id())->where('manhwa_id', $manhwa->id)->first()
+            : null;
+
+        $chapterUntukBaca = $riwayatBaca
+            ? $riwayatBaca->chapter
+            : Chapter::where('manhwa_id', $manhwa->id)->orderBy('nomor_chapter')->first();
+
+        $chapterDibacaIds = Auth::check()
+            ? ChapterRead::where('user_id', Auth::id())
+                ->whereIn('chapter_id', $manhwa->chapters->pluck('id'))
+                ->pluck('chapter_id')
+                ->toArray()
+            : [];
+
+        return view('user.manhwa-detail', compact(
+            'manhwa',
+            'jumlahBookmark',
+            'sudahBookmark',
+            'chapterUntukBaca',
+            'chapterDibacaIds'
+        ));
     }
 
-    public function chapter()
+    public function chapterRead(Manhwa $manhwa, $nomorChapter)
     {
-        return view('user.chapter-read');
+        $chapter = Chapter::where('manhwa_id', $manhwa->id)
+            ->where('nomor_chapter', $nomorChapter)
+            ->with('pages')
+            ->firstOrFail();
+
+        $chapterSebelumnya = Chapter::where('manhwa_id', $manhwa->id)
+            ->where('nomor_chapter', '<', $chapter->nomor_chapter)
+            ->orderByDesc('nomor_chapter')
+            ->first();
+
+        $chapterSelanjutnya = Chapter::where('manhwa_id', $manhwa->id)
+            ->where('nomor_chapter', '>', $chapter->nomor_chapter)
+            ->orderBy('nomor_chapter')
+            ->first();
+
+        $manhwa->increment('views');
+
+        if (Auth::check()) {
+            ChapterRead::updateOrCreate(
+                ['user_id' => Auth::id(), 'chapter_id' => $chapter->id],
+                []
+            );
+
+            ReadingHistory::updateOrCreate(
+                ['user_id' => Auth::id(), 'manhwa_id' => $manhwa->id],
+                ['chapter_id' => $chapter->id]
+            );
+        }
+
+        return view('user.chapter-read', compact(
+            'manhwa',
+            'chapter',
+            'chapterSebelumnya',
+            'chapterSelanjutnya'
+        ));
     }
 
     public function genre()

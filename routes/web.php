@@ -3,19 +3,20 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BookmarkController;
-use App\Http\Controllers\UserBookmarkController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ChapterPageController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HakAksesController;
 use App\Http\Controllers\KomentarController;
-use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\ManhwaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserBookmarkController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(UserController::class)->group(function () {
@@ -23,7 +24,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/manhwa', 'manhwa')->name('manhwa');
     Route::get('/manhwa/{manhwa:slug}', 'detail')
         ->name('manhwa.detail');
-    Route::get('/chapter/read', 'chapter')->name('chapter.read');
+    Route::get('/manhwa/{manhwa:slug}/chapter/{nomorChapter}', 'chapterRead')
+        ->name('chapter.read');
     Route::get('/genre', 'genre')->name('genre');
     Route::get('/explore', 'explore')
         ->name('explore');
@@ -146,12 +148,18 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit']) 
+    Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+    Route::get('/akun', [UserProfileController::class, 'edit'])
+        ->name('akun.edit');
+    Route::patch('/akun', [UserProfileController::class, 'update'])
+        ->name('akun.update');
+    Route::delete('/akun', [UserProfileController::class, 'destroy'])
+        ->name('akun.destroy');
     Route::post('/manhwa/{manhwa:slug}/bookmark', [UserBookmarkController::class, 'toggle'])
         ->name('bookmark.toggle');
     Route::get('/library', [LibraryController::class, 'index'])

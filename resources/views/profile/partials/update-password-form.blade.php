@@ -28,51 +28,75 @@
 
             {{-- Password Saat Ini --}}
             <div style="margin-bottom:14px;">
-                <x-text-input id="update_password_current_password" name="current_password" type="password"
-                    style="
-                        width:100%;
-                        height:42px;
-                        border-radius:10px;
-                        background:#111827;
-                        border:1px solid #374151;
-                        color:#f8fafc;
-                        font-size:13px;
-                    "
-                    placeholder="Password Saat Ini" autocomplete="current-password" />
+                <div style="position:relative;">
+                    <x-text-input id="update_password_current_password" name="current_password" type="password"
+                        style="
+                width:100%;
+                height:42px;
+                border-radius:10px;
+                background:#111827;
+                border:1px solid #374151;
+                color:#f8fafc;
+                font-size:13px;
+                padding-right:45px;
+            "
+                        placeholder="Password Saat Ini" autocomplete="current-password" />
+                    <button type="button" class="toggle-password-btn" data-target="update_password_current_password"
+                        style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
+                background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
 
                 <x-input-error class="mt-2" :messages="$errors->updatePassword->get('current_password')" />
             </div>
 
-            {{-- Password Baru --}}
             <div style="margin-bottom:14px;">
-                <x-text-input id="update_password_password" name="password" type="password"
-                    style="
-                        width:100%;
-                        height:42px;
-                        border-radius:10px;
-                        background:#111827;
-                        border:1px solid #374151;
-                        color:#f8fafc;
-                        font-size:13px;
-                    "
-                    placeholder="Password Baru" autocomplete="new-password" />
+                <div style="position:relative;">
+                    <x-text-input id="update_password_password" name="password" type="password"
+                        style="
+                width:100%;
+                height:42px;
+                border-radius:10px;
+                background:#111827;
+                border:1px solid #374151;
+                color:#f8fafc;
+                font-size:13px;
+                padding-right:45px;
+            "
+                        placeholder="Password Baru" autocomplete="new-password" />
+                    <button type="button" class="toggle-password-btn" data-target="update_password_password"
+                        style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
+                background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
 
                 <x-input-error class="mt-2" :messages="$errors->updatePassword->get('password')" />
             </div>
 
-            {{-- Konfirmasi Password --}}
             <div style="margin-bottom:14px;">
-                <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password"
-                    style="
-                        width:100%;
-                        height:42px;
-                        border-radius:10px;
-                        background:#111827;
-                        border:1px solid #374151;
-                        color:#f8fafc;
-                        font-size:13px;
-                    "
-                    placeholder="Konfirmasi Password Baru" autocomplete="new-password" />
+                <div style="position:relative;">
+                    <x-text-input id="update_password_password_confirmation" name="password_confirmation"
+                        type="password"
+                        style="
+                width:100%;
+                height:42px;
+                border-radius:10px;
+                background:#111827;
+                border:1px solid #374151;
+                color:#f8fafc;
+                font-size:13px;
+                padding-right:45px;
+            "
+                        placeholder="Konfirmasi Password Baru" autocomplete="new-password" />
+                    <button type="button" class="toggle-password-btn"
+                        data-target="update_password_password_confirmation"
+                        style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
+                background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
 
                 <x-input-error class="mt-2" :messages="$errors->updatePassword->get('password_confirmation')" />
             </div>
@@ -102,3 +126,16 @@
         </form>
     </div>
 </section>
+
+<script>
+    document.querySelectorAll('.toggle-password-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var input = document.getElementById(this.dataset.target);
+            var icon = btn.querySelector('i');
+            var isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            icon.classList.toggle('bi-eye', !isPassword);
+            icon.classList.toggle('bi-eye-slash', isPassword);
+        });
+    });
+</script>

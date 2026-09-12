@@ -10,17 +10,17 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- Username -->
         <div style="margin-bottom:20px;">
-            <x-input-label for="name" value="Nama" />
-            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
-                autocomplete="name" class="form-control" placeholder="Masukkan nama"
+            <x-input-label for="username" value="Username" />
+            <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus
+                autocomplete="username" class="form-control" placeholder="Masukkan username"
                 style="
                 margin-top:8px;
                 height:50px;
                 border-radius:12px;
             ">
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
@@ -47,11 +47,10 @@
                     border-radius:12px;
                     padding-right:45px;
                 ">
-                <button type="button"
-                    class="toggle-password btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0"
-                    data-target="password" style="background:none; color:#94a3b8; width:30px; height:30px;">
+                <button type="button" class="toggle-password" data-target="password"
+                    style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
+                        background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
                     <i class="bi bi-eye toggle-password-icon"></i>
-                </button>
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -67,12 +66,10 @@
                     border-radius:12px;
                     padding-right:45px;
                 ">
-                <button type="button"
-                    class="toggle-password btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0"
-                    data-target="password_confirmation"
-                    style="background:none; color:#94a3b8; width:30px; height:30px;">
+                <button type="button" class="toggle-password" data-target="password_confirmation"
+                    style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
+                        background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
                     <i class="bi bi-eye toggle-password-icon"></i>
-                </button>
             </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
@@ -105,4 +102,3 @@
         });
     </script>
 </x-guest-layout>
-    

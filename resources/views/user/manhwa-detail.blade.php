@@ -4,8 +4,8 @@
 
 @section('content')
     <style>
-        .chapter-card:hover {
-            background-color: rgba(255, 255, 255, 0.05);
+        .chapter-card.sudah-dibaca {
+            color: #0dcaf0 !important;
         }
     </style>
 
@@ -62,10 +62,18 @@
                     @endif
 
                     <div class="d-flex flex-wrap gap-2 mb-3">
-                        <a href="{{ route('chapter.read') }}" class="btn btn-primary">
-                            <i class="bi bi-play-fill"></i>
-                            Baca
-                        </a>
+                        @if ($chapterUntukBaca)
+                            <a href="{{ route('chapter.read', [$manhwa->slug, $chapterUntukBaca->nomor_chapter]) }}"
+                                class="btn btn-primary">
+                                <i class="bi bi-play-fill"></i>
+                                Baca
+                            </a>
+                        @else
+                            <button class="btn btn-primary" disabled>
+                                <i class="bi bi-play-fill"></i>
+                                Belum Ada Chapter
+                            </button>
+                        @endif
 
                         @auth
                             <form action="{{ route('bookmark.toggle', $manhwa) }}" method="POST" class="d-inline">
@@ -174,10 +182,11 @@
                 @forelse ($manhwa->chapters as $chapter)
                     @php
                         $thumb = $chapter->thumbnail ?? $chapter->firstPage?->gambar;
+                        $sudahDibaca = in_array($chapter->id, $chapterDibacaIds);
                     @endphp
                     <div class="col-md-4 chapter-item" data-nomor="{{ $chapter->nomor_chapter }}">
-                        <a href="{{ route('chapter.read') }}"
-                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none text-reset chapter-card">
+                        <a href="{{ route('chapter.read', [$manhwa->slug, $chapter->nomor_chapter]) }}"
+                            class="d-flex align-items-center gap-3 p-2 rounded text-decoration-none text-reset chapter-card {{ $sudahDibaca ? 'sudah-dibaca' : '' }}">
                             @if ($thumb)
                                 <img src="{{ asset('storage/' . $thumb) }}"
                                     style="width:80px; height:60px; object-fit:cover;" class="rounded"
