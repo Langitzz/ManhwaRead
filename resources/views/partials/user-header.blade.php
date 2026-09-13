@@ -3,7 +3,11 @@
     <div class="container-fluid container-xl position-relative">
         <div class="top-row d-flex align-items-center justify-content-between">
             <a href="{{ route('home') }}" class="logo d-flex align-items-end text-decoration-none">
-                <h1 class="sitename">ManhwaRead</h1>
+                @if ($siteSetting->logo)
+                    <img src="{{ asset('storage/' . $siteSetting->logo) }}" alt="{{ $siteSetting->nama_situs }}"
+                        style="height: 32px; margin-right: 8px;">
+                @endif
+                <h1 class="sitename">{{ $siteSetting->nama_situs }}</h1>
                 <span>.</span>
             </a>
 

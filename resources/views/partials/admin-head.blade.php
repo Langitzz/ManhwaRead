@@ -1,6 +1,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ManhwaRead | @yield('title')</title>
+    <title>{{ $siteSetting->nama_situs }} | @yield('title')</title>
 
     <!--begin::Theme Init (prevents flash of incorrect theme on load, #6043)-->
     <script>

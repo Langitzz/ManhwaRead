@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\BackupController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ChapterPageController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\ManhwaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\UserBookmarkController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
@@ -41,6 +44,14 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', [AdminController::class, 'index'])
             ->name('admin');
+        Route::get('/backup', [BackupController::class, 'index'])
+            ->name('backup.index');
+        Route::get('/backup/download', [BackupController::class, 'download'])
+            ->name('backup.download');
+        Route::get('/pengaturan', [SiteSettingController::class, 'edit'])
+            ->name('pengaturan.edit');
+        Route::patch('/pengaturan', [SiteSettingController::class, 'update'])
+            ->name('pengaturan.update');    
 
         // Manhwa
         Route::get('/manhwa', [ManhwaController::class, 'index'])
@@ -69,6 +80,18 @@ Route::prefix('admin')
             ->name('genre.update');
         Route::delete('/genre/{genre}', [GenreController::class, 'destroy'])
             ->name('genre.destroy');
+                    Route::get('/banner', [BannerController::class, 'index'])
+            ->name('banner.index');
+        Route::get('/banner/create', [BannerController::class, 'create'])
+            ->name('banner.create');
+        Route::post('/banner', [BannerController::class, 'store'])
+            ->name('banner.store');
+        Route::get('/banner/{banner}/edit', [BannerController::class, 'edit'])
+            ->name('banner.edit');
+        Route::put('/banner/{banner}', [BannerController::class, 'update'])
+            ->name('banner.update');
+        Route::delete('/banner/{banner}', [BannerController::class, 'destroy'])
+            ->name('banner.destroy');
 
         // Chapter
         Route::get('/chapter', [ChapterController::class, 'index'])

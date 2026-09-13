@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="text-center mb-4 mt-2">
         <h2 class="fw-bold mt-3 mb-1 text-white">
-            ManhwaRead
+            {{ $siteSetting->nama_situs }}
         </h2>
         <p class="text-light mb-0" style="opacity:.8;">
             Buat akun baru

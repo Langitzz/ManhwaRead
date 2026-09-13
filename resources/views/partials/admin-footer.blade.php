@@ -1,7 +1,7 @@
 <footer class="app-footer">
     <strong>
         Copyright &copy; {{ date('Y') }}
-        ManhwaRead.
+        {{ $siteSetting->nama_situs }}.
     </strong>
     All rights reserved.
 

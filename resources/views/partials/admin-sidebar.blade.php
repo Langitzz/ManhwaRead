@@ -3,10 +3,15 @@
     <div class="sidebar-brand">
         <!--begin::Brand Link-->
         <a href="{{ route('admin') }}" class="brand-link">
-            <i class="bi bi-book-half fs-3 ms-3 me-2"></i>
+            @if ($siteSetting->logo)
+                <img src="{{ asset('storage/' . $siteSetting->logo) }}" alt="{{ $siteSetting->nama_situs }}"
+                    class="ms-3 me-2" style="height: 24px;">
+            @else
+                <i class="bi bi-book-half fs-3 ms-3 me-2"></i>
+            @endif
 
             <span class="brand-text fw-bold">
-                ManhwaRead
+                {{ $siteSetting->nama_situs }}
             </span>
         </a>
         <!--end::Brand Link-->
@@ -66,112 +71,139 @@
                                     <i class="nav-icon bi bi-journal-text"></i>
                                     <p>Chapter</p>
                                 </a>
+
+                            <li class="nav-item">
+                                <a href="{{ route('banner.index') }}"
+                                    class="nav-link {{ request()->routeIs('banner.*') ? 'active' : '' }}">
+                                    <i class="nav-icon bi bi-images"></i>
+                                    <p>Banner</p>
+                                </a>
                             </li>
-                        </ul>
                     </li>
-                @endif
+            </ul>
+            </li>
+            @endif
 
-                @if (in_array('aktivitas', $userPermissions))
-                    <li
-                        class="nav-item {{ request()->routeIs('komentar.*', 'bookmark.*', 'riwayat.*') ? 'menu-open' : '' }}">
-                        <a href="javascript:void(0)"
-                            class="nav-link {{ request()->routeIs('komentar.*', 'bookmark.*', 'riwayat.*') ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-arrow-left-right"></i>
-                            <p>
-                                Aktivitas
-                                <i class="nav-arrow bi bi-chevron-right"></i>
-                            </p>
-                        </a>
+            @if (in_array('aktivitas', $userPermissions))
+                <li
+                    class="nav-item {{ request()->routeIs('komentar.*', 'bookmark.*', 'riwayat.*') ? 'menu-open' : '' }}">
+                    <a href="javascript:void(0)"
+                        class="nav-link {{ request()->routeIs('komentar.*', 'bookmark.*', 'riwayat.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-arrow-left-right"></i>
+                        <p>
+                            Aktivitas
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
 
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('komentar.index') }}"
-                                    class="nav-link {{ request()->routeIs('komentar.*') ? 'active' : '' }}">
-                                    <i class="nav-icon bi bi-chat-dots"></i>
-                                    <p>Komentar</p>
-                                </a>
-                            </li>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('komentar.index') }}"
+                                class="nav-link {{ request()->routeIs('komentar.*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-chat-dots"></i>
+                                <p>Komentar</p>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('bookmark.index') }}"
-                                    class="nav-link {{ request()->routeIs('bookmark.*') ? 'active' : '' }}">
-                                    <i class="nav-icon bi bi-bookmark-heart"></i>
-                                    <p>Bookmark</p>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="{{ route('bookmark.index') }}"
+                                class="nav-link {{ request()->routeIs('bookmark.*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-bookmark-heart"></i>
+                                <p>Bookmark</p>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('riwayat.index') }}"
-                                    class="nav-link {{ request()->routeIs('riwayat.*') ? 'active' : '' }}">
-                                    <i class="nav-icon bi bi-clock-history"></i>
-                                    <p>Riwayat Baca</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
+                        <li class="nav-item">
+                            <a href="{{ route('riwayat.index') }}"
+                                class="nav-link {{ request()->routeIs('riwayat.*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-clock-history"></i>
+                                <p>Riwayat Baca</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
-                @if (in_array('user', $userPermissions))
-                    <li class="nav-item {{ request()->routeIs('user.*') ? 'menu-open' : '' }}">
-                        <a href="javascript:void(0)"
-                            class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-people"></i>
-                            <p>
-                                User
-                                <i class="nav-arrow bi bi-chevron-right"></i>
-                            </p>
-                        </a>
+            @if (in_array('user', $userPermissions))
+                <li class="nav-item {{ request()->routeIs('user.*') ? 'menu-open' : '' }}">
+                    <a href="javascript:void(0)" class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-people"></i>
+                        <p>
+                            User
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
 
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('user.index') }}"
-                                    class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
-                                    <i class="nav-icon bi bi-person-lines-fill"></i>
-                                    <p>Daftar User</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('user.index') }}"
+                                class="nav-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-person-lines-fill"></i>
+                                <p>Daftar User</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
 
-                @if (in_array('admin', $userPermissions))
-                    <li
-                        class="nav-item {{ request()->routeIs('admin.user.*', 'admin.access.*', 'admin.log.*') ? 'menu-open' : '' }}">
-                        <a href="javascript:void(0)"
-                            class="nav-link {{ request()->routeIs('admin.user.*', 'admin.access.*', 'admin.log.*') ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-shield-lock"></i>
-                            <p>
-                                Admin
-                                <i class="nav-arrow bi bi-chevron-right"></i>
-                            </p>
-                        </a>
+            @if (in_array('admin', $userPermissions))
+                <li
+                    class="nav-item {{ request()->routeIs('admin.user.*', 'admin.access.*', 'admin.log.*') ? 'menu-open' : '' }}">
+                    <a href="javascript:void(0)"
+                        class="nav-link {{ request()->routeIs('admin.user.*', 'admin.access.*', 'admin.log.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-shield-lock"></i>
+                        <p>
+                            Admin
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
 
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('admin.user.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
-                                    <i class="nav-icon bi bi-person-gear"></i>
-                                    <p>Role User</p>
-                                </a>
-                            </li>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.user.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-person-gear"></i>
+                                <p>Role User</p>
+                            </a>
+                        </li>
 
-                            <li class="nav-item {{ request()->routeIs('admin.access.*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.access.index') }}" class="nav-link">
-                                    <i class="nav-icon bi bi-key"></i>
-                                    <p>Hak Akses</p>
-                                </a>
-                            </li>
+                        <li class="nav-item {{ request()->routeIs('admin.access.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.access.index') }}" class="nav-link">
+                                <i class="nav-icon bi bi-key"></i>
+                                <p>Hak Akses</p>
+                            </a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('admin.log.index') }}"
-                                    class="nav-link {{ request()->routeIs('admin.log.*') ? 'active' : '' }}">
-                                    <i class="nav-icon bi bi-clock-history"></i>
-                                    <p>Log Aktivitas</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
+                        <li class="nav-item">
+                            <a href="{{ route('admin.log.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.log.*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-clock-history"></i>
+                                <p>Log Aktivitas</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
+            @if (in_array('backup', $userPermissions))
+                <li class="nav-item">
+                    <a href="{{ route('backup.index') }}"
+                        class="nav-link {{ request()->routeIs('backup.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-hdd-network"></i>
+                        <p>Backup Database</p>
+                    </a>
+                </li>
+            @endif
+
+            @if (in_array('pengaturan', $userPermissions))
+                <li class="nav-item">
+                    <a href="{{ route('pengaturan.edit') }}"
+                        class="nav-link {{ request()->routeIs('pengaturan.*') ? 'active' : '' }}">
+                        <i class="nav-icon bi bi-gear"></i>
+                        <p>Pengaturan Situs</p>
+                    </a>
+                </li>
+            @endif
             </ul>
             <!--end::Sidebar Menu-->
 

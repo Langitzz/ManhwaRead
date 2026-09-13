@@ -34,6 +34,53 @@
         </div>
     </section>
 
+    <!-- Banner Carousel Section -->
+    @if ($banners->isNotEmpty())
+        <section class="section pt-0">
+            <div class="container">
+                <div id="bannerCarousel" class="carousel slide rounded-4 overflow-hidden shadow" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @foreach ($banners as $banner)
+                            <button type="button" data-bs-target="#bannerCarousel" data-bs-slide-to="{{ $loop->index }}"
+                                class="{{ $loop->first ? 'active' : '' }}"
+                                aria-current="{{ $loop->first ? 'true' : 'false' }}"
+                                aria-label="Slide {{ $loop->iteration }}"></button>
+                        @endforeach
+                    </div>
+
+                    <div class="carousel-inner">
+                        @foreach ($banners as $banner)
+                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                @if ($banner->link_url)
+                                    <a href="{{ $banner->link_url }}">
+                                        <img src="{{ asset('storage/' . $banner->gambar) }}" class="d-block w-100"
+                                            alt="{{ $banner->judul }}" style="max-height: 400px; object-fit: cover;">
+                                    </a>
+                                @else
+                                    <img src="{{ asset('storage/' . $banner->gambar) }}" class="d-block w-100"
+                                        alt="{{ $banner->judul }}" style="max-height: 400px; object-fit: cover;">
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+
+                    @if ($banners->count() > 1)
+                        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    @endif
+                </div>
+            </div>
+        </section>
+    @endif
+
     <!-- Latest Update Section -->
     <section class="section">
         <div class="container">

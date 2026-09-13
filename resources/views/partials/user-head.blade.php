@@ -2,7 +2,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>ManhwaRead | @yield('title')</title>
+    <title>{{ $siteSetting->nama_situs }} | @yield('title')</title>
 
     <meta name="description" content="@yield('description', 'Baca Manhwa Gratis')">
     <meta name="keywords" content="Manhwa, Manga, Webtoon">

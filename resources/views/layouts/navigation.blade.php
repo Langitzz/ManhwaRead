@@ -20,7 +20,7 @@
                             text-decoration:none;
                             line-height:1;
                         ">
-                        ManhwaRead
+                        {{ $siteSetting->nama_situs }}
                     </a>
                 </div>
             </div>

@@ -6,15 +6,18 @@ use App\Models\Chapter;
 use App\Models\ChapterRead;
 use App\Models\Genre;
 use App\Models\Manhwa;
+use App\Models\Banner;
 use App\Models\ReadingHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function home()
+        public function home()
     {
-        return view('user.home');
+        $banners = Banner::where('status', true)->orderBy('urutan')->get();
+
+        return view('user.home', compact('banners'));
     }
 
     public function manhwa()

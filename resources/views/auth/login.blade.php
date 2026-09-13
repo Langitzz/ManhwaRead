@@ -2,7 +2,7 @@
 
     <div class="text-center mb-3">
         <h2 class="fw-bold mb-1" style="color:#f8fafc;">
-            ManhwaRead
+            {{ $siteSetting->nama_situs }}
         </h2>
         <p class="mb-0" style="color:#94a3b8;">
             Selamat datang kembali
