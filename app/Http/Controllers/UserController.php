@@ -62,9 +62,9 @@ class UserController extends Controller
 
         $chapterDibacaIds = Auth::check()
             ? ChapterRead::where('user_id', Auth::id())
-                ->whereIn('chapter_id', $manhwa->chapters->pluck('id'))
-                ->pluck('chapter_id')
-                ->toArray()
+            ->whereIn('chapter_id', $manhwa->chapters->pluck('id'))
+            ->pluck('chapter_id')
+            ->toArray()
             : [];
 
         return view('user.manhwa-detail', compact(
@@ -157,7 +157,7 @@ class UserController extends Controller
             ->withMax('chapters', 'tanggal_rilis');
 
         if ($request->filled('q')) {
-            $query->where('judul', 'like', '%'.$request->q.'%');
+            $query->where('judul', 'like', '%' . $request->q . '%');
         }
 
         if ($request->filled('status')) {
@@ -172,40 +172,11 @@ class UserController extends Controller
             $query->whereIn('ilustrator', $request->ilustrator);
         }
 
-        if ($request->filled('genre_in')) {
-            $includeIds = $request->genre_in;
-            $inclusionMode = $request->get('inclusion_mode', 'or');
-
-            if ($inclusionMode === 'and') {
-                foreach ($includeIds as $genreId) {
-                    $query->whereHas('genres', function ($q) use ($genreId) {
-                        $q->where('genres.id', $genreId);
-                    });
-                }
-            } else {
-                $query->whereHas('genres', function ($q) use ($includeIds) {
-                    $q->whereIn('genres.id', $includeIds);
-                });
-            }
-        }
-
-        if ($request->filled('genre_ex')) {
-            $excludeIds = $request->genre_ex;
-            $exclusionMode = $request->get('exclusion_mode', 'or');
-
-            if ($exclusionMode === 'and') {
-                $query->where(function ($q) use ($excludeIds) {
-                    $q->whereDoesntHave('genres', function ($qq) use ($excludeIds) {
-                        $qq->whereIn('genres.id', $excludeIds);
-                    })->orWhereHas('genres', function ($qq) use ($excludeIds) {
-                        $qq->whereIn('genres.id', $excludeIds);
-                    }, '<', count($excludeIds));
-                });
-            } else {
-                $query->whereDoesntHave('genres', function ($q) use ($excludeIds) {
-                    $q->whereIn('genres.id', $excludeIds);
-                });
-            }
+        if ($request->filled('genre')) {
+            $genreIds = $request->genre;
+            $query->whereHas('genres', function ($q) use ($genreIds) {
+                $q->whereIn('genres.id', $genreIds);
+            });
         }
 
         match ($request->get('sort', 'terbaru')) {

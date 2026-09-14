@@ -10,6 +10,13 @@ class LibraryController extends Controller
 {
     public function index()
     {
+        if (! Auth::check()) {
+            return view('user.library', [
+                'bookmarks' => collect(),
+                'histories' => collect(),
+            ]);
+        }
+
         $bookmarks = Bookmark::with('manhwa')
             ->where('user_id', Auth::id())
             ->latest()

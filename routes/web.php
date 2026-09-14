@@ -37,6 +37,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/populer', 'populer')->name('populer');
     Route::get('/latest', 'latest')->name('latest');
     Route::get('/404', 'notFaound')->name('404');
+    Route::get('/library', [LibraryController::class, 'index'])
+        ->name('library.index');
 });
 
 Route::prefix('admin')
@@ -51,7 +53,7 @@ Route::prefix('admin')
         Route::get('/pengaturan', [SiteSettingController::class, 'edit'])
             ->name('pengaturan.edit');
         Route::patch('/pengaturan', [SiteSettingController::class, 'update'])
-            ->name('pengaturan.update');    
+            ->name('pengaturan.update');
 
         // Manhwa
         Route::get('/manhwa', [ManhwaController::class, 'index'])
@@ -80,7 +82,7 @@ Route::prefix('admin')
             ->name('genre.update');
         Route::delete('/genre/{genre}', [GenreController::class, 'destroy'])
             ->name('genre.destroy');
-                    Route::get('/banner', [BannerController::class, 'index'])
+        Route::get('/banner', [BannerController::class, 'index'])
             ->name('banner.index');
         Route::get('/banner/create', [BannerController::class, 'create'])
             ->name('banner.create');
@@ -185,8 +187,6 @@ Route::middleware('auth')->group(function () {
         ->name('akun.destroy');
     Route::post('/manhwa/{manhwa:slug}/bookmark', [UserBookmarkController::class, 'toggle'])
         ->name('bookmark.toggle');
-    Route::get('/library', [LibraryController::class, 'index'])
-        ->name('library.index');
 });
 
 require __DIR__.'/auth.php';
