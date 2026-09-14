@@ -2,7 +2,7 @@
     <div class="list-group">
         @forelse ($manhwas as $manhwa)
             <a href="{{ route('manhwa.detail', $manhwa->slug) }}"
-                class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                class="list-group-item list-group-item-action search-list-item d-flex align-items-center gap-3">
                 <img src="{{ $manhwa->cover ? asset('storage/' . $manhwa->cover) : asset('assets/blogy/assets/img/blog/blog-post-1.webp') }}"
                     style="width:50px; height:70px; object-fit:cover;" class="rounded">
                 <div class="flex-grow-1">
@@ -27,7 +27,7 @@
 @else
     <div class="row gy-4">
         @forelse ($manhwas as $manhwa)
-            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
+            <div class="col-lg-2 col-md-3 col-sm-4 col-6 search-card-col">
                 <x-manhwa-card slug="{{ $manhwa->slug }}"
                     image="{{ $manhwa->cover ? asset('storage/' . $manhwa->cover) : asset('assets/blogy/assets/img/blog/blog-post-1.webp') }}"
                     title="{{ $manhwa->judul }}" populer="{{ $manhwa->bookmarks_count }}" />
