@@ -15,30 +15,52 @@
                 <ul>
                     <li>
                         <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
-                            Home
+                            Beranda
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('explore') }}" class="{{ request()->routeIs('explore') ? 'active' : '' }}">
-                            Explore
+                        <a href="{{ route('genre') }}" class="{{ request()->routeIs('genre') ? 'active' : '' }}">
+                            Genre
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('populer') }}"
+                            class="{{ request()->routeIs('explore') && request('sort') === 'populer' ? 'active' : '' }}">
+                            Populer
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('latest') }}"
+                            class="{{ request()->routeIs('explore') && request('sort') === 'terbaru' ? 'active' : '' }}">
+                            Terbaru
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('library.index') }}"
                             class="{{ request()->routeIs('library.index') ? 'active' : '' }}">
-                            Library
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('search') }}" class="{{ request()->routeIs('search') ? 'active' : '' }}">
-                            Search
+                            Koleksi
                         </a>
                     </li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <form action="{{ route('search') }}" method="GET"
+                    class="d-none d-md-flex align-items-center position-relative">
+                    <input type="text" name="q" id="navbarSearchInput" value="{{ request('q') }}"
+                        class="form-control form-control-sm bg-dark text-light border-secondary"
+                        placeholder="Cari komik..." style="width: 200px; padding-right: 55px;" autocomplete="off">
+                    <span class="badge bg-secondary position-absolute end-0 me-2"
+                        style="pointer-events: none; font-size: 10px;">
+                        Ctrl+K
+                    </span>
+                </form>
+
+                <a href="{{ route('search') }}" class="d-md-none fs-5 text-decoration-none text-reset" title="Cari">
+                    <i class="bi bi-search"></i>
+                </a>
+
                 @guest
                     <a href="{{ route('login') }}" class="btn btn-primary">
                         <i class="bi bi-box-arrow-in-right"></i>
@@ -78,3 +100,13 @@
         </div>
     </div>
 </header>
+@push('scripts')
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                document.getElementById('navbarSearchInput').focus();
+            }
+        });
+    </script>
+@endpush

@@ -14,29 +14,17 @@
                 </p>
             </div>
             <div class="row g-3">
-                @php
-                    $genres = [
-                        'Action',
-                        'Adventure',
-                        'Comedy',
-                        'Drama',
-                        'Fantasy',
-                        'Martial Arts',
-                        'Romance',
-                        'School Life',
-                        'Shounen',
-                        'Supernatural',
-                        'Murim',
-                        'Reincarnation',
-                    ];
-                @endphp
-                @foreach ($genres as $genre)
+                @forelse ($genres as $genre)
                     <div class="col-lg-3 col-md-4 col-6">
-                        <a href="#" class="btn btn-outline-primary w-100 py-3">
-                            {{ $genre }}
+                        <a href="{{ route('explore', ['genre' => $genre->id]) }}" class="btn btn-outline-primary w-100 py-3">
+                            {{ $genre->nama_genre }}
                         </a>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-12 text-center text-muted">
+                        Belum ada genre yang tersedia.
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>

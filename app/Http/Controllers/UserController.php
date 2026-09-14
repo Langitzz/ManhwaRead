@@ -2,22 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Chapter;
 use App\Models\ChapterRead;
 use App\Models\Genre;
 use App\Models\Manhwa;
-use App\Models\Banner;
 use App\Models\ReadingHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-        public function home()
+    public function home()
     {
         $banners = Banner::where('status', true)->orderBy('urutan')->get();
 
-        return view('user.home', compact('banners'));
+        $genrePopuler = Genre::withCount('manhwas')->orderByDesc('manhwas_count')->take(12)->get();
+
+        $manhwaPopuler = Manhwa::withMax('chapters', 'nomor_chapter')
+            ->orderByDesc('views')
+            ->take(6)
+            ->get();
+
+        $manhwaTerbaru = Manhwa::withMax('chapters', 'nomor_chapter')
+            ->withMax('chapters', 'tanggal_rilis')
+            ->orderByDesc('chapters_max_tanggal_rilis')
+            ->take(8)
+            ->get();
+
+        return view('user.home', compact('banners', 'genrePopuler', 'manhwaPopuler', 'manhwaTerbaru'));
     }
 
     public function manhwa()
@@ -104,7 +117,9 @@ class UserController extends Controller
 
     public function genre()
     {
-        return view('user.genre');
+        $genres = Genre::orderBy('nama_genre')->get();
+
+        return view('user.genre', compact('genres'));
     }
 
     public function explore(Request $request)
@@ -223,12 +238,12 @@ class UserController extends Controller
 
     public function populer()
     {
-        return view('user.populer');
+        return redirect()->route('explore', ['sort' => 'populer']);
     }
 
     public function latest()
     {
-        return view('user.latest');
+        return redirect()->route('explore', ['sort' => 'terbaru']);
     }
 
     public function notFound()

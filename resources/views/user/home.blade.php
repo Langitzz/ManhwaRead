@@ -81,57 +81,25 @@
         </section>
     @endif
 
-    <!-- Latest Update Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-title">
-                <h2>🔥 Update Chapter Terbaru</h2>
-                <p>Manhwa yang baru saja diperbarui.</p>
-            </div>
-            <div class="row g-4">
-                @for ($i = 1; $i <= 8; $i++)
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="card border-0 shadow-sm h-100">
-                            <img src="{{ asset('assets/blogy/assets/img/blog/blog-post-3.webp') }}" class="card-img-top"
-                                alt="Manhwa">
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    Solo Leveling
-                                </h5>
-                                <p class="mb-1 text-muted">
-                                    Chapter 201
-                                </p>
-                                <small class="text-secondary">
-                                    Update 10 menit yang lalu
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                @endfor
-            </div>
-        </div>
-    </section>
-
     <!-- Popular Genres -->
     <section class="section">
         <div class="container">
-            <div class="section-title">
-                <h2>📚 Genre Populer</h2>
-                <p>Pilih genre favoritmu.</p>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    📚 Genre Populer
+                </h2>
+                <a href="{{ route('genre') }}" class="btn btn-outline-primary">
+                    Lihat Semua
+                </a>
             </div>
             <div class="d-flex flex-wrap gap-3 justify-content-center">
-                <a href="#" class="btn btn-outline-primary rounded-pill">Action</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Adventure</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Comedy</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Drama</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Fantasy</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Isekai</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Martial Arts</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Romance</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">School</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Shounen</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Supernatural</a>
-                <a href="#" class="btn btn-outline-primary rounded-pill">Tragedy</a>
+                @forelse ($genrePopuler as $genre)
+                    <a href="{{ route('explore', ['genre' => $genre->id]) }}" class="btn btn-outline-primary rounded-pill">
+                        {{ $genre->nama_genre }}
+                    </a>
+                @empty
+                    <p class="text-muted">Belum ada genre.</p>
+                @endforelse
             </div>
         </div>
     </section>
@@ -139,19 +107,30 @@
     <!-- Popular Manhwa -->
     <section class="section">
         <div class="container">
-            <div class="section-title">
-                <h2>🔥 Manhwa Populer</h2>
-                <p>Manhwa yang paling banyak dibaca minggu ini.</p>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    🔥 Manhwa Populer
+                </h2>
+                <a href="{{ route('populer') }}" class="btn btn-outline-primary">
+                    Lihat Semua
+                </a>
             </div>
             <div class="row g-4">
-                <div class="col-lg-2 col-md-4 col-6">
-                    <x-manhwa-card image="{{ asset('assets/blogy/assets/img/blog/blog-post-3.webp') }}"
-                        title="Solo Leveling" rating="9.9" chapter="Chapter 201" />
-                </div>
+                @forelse ($manhwaPopuler as $manhwa)
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <x-manhwa-card :slug="$manhwa->slug"
+                            image="{{ $manhwa->cover ? asset('storage/' . $manhwa->cover) : asset('assets/blogy/assets/img/blog/blog-post-3.webp') }}"
+                            title="{{ $manhwa->judul }}" rating="{{ $manhwa->rating ?? '-' }}"
+                            chapter="{{ $manhwa->chapters_max_nomor_chapter ? 'Chapter ' . $manhwa->chapters_max_nomor_chapter : 'Belum ada chapter' }}" />
+                    </div>
+                @empty
+                    <p class="text-muted text-center">Belum ada manhwa.</p>
+                @endforelse
             </div>
         </div>
     </section>
 
+    <!-- Manhwa Terbaru -->
     <section class="section">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -163,12 +142,17 @@
                 </a>
             </div>
             <div class="row g-4">
-                @for ($i = 1; $i <= 8; $i++)
-                    <div class="col-lg-3 col-md-4 col-6">
-                        <x-manhwa-card image="{{ asset('assets/blogy/assets/img/blog/blog-post-1.webp') }}"
-                            title="Solo Leveling" rating="9.9" chapter="Chapter 201" time="2 jam yang lalu" />
+                @forelse ($manhwaTerbaru as $manhwa)
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <x-manhwa-card :slug="$manhwa->slug"
+                            image="{{ $manhwa->cover ? asset('storage/' . $manhwa->cover) : asset('assets/blogy/assets/img/blog/blog-post-1.webp') }}"
+                            title="{{ $manhwa->judul }}" rating="{{ $manhwa->rating ?? '-' }}"
+                            chapter="{{ $manhwa->chapters_max_nomor_chapter ? 'Chapter ' . $manhwa->chapters_max_nomor_chapter : 'Belum ada chapter' }}"
+                            time="{{ $manhwa->chapters_max_tanggal_rilis ? \Carbon\Carbon::parse($manhwa->chapters_max_tanggal_rilis)->diffForHumans() : '' }}" />
                     </div>
-                @endfor
+                @empty
+                    <p class="text-muted text-center">Belum ada manhwa terbaru.</p>
+                @endforelse
             </div>
         </div>
     </section>
