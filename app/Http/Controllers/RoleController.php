@@ -28,7 +28,7 @@ class RoleController extends Controller
         ActivityLog::catat('Menambahkan Role', "Role: {$role->nama_peran}");
 
         return redirect()
-            ->route('admin.user.index')
+            ->route('admin.role.index')
             ->with('success', 'Peran pengguna berhasil ditambahkan.');
     }
 
@@ -45,7 +45,7 @@ class RoleController extends Controller
         ActivityLog::catat('Mengubah Role', "Role: {$role->nama_peran}");
 
         return redirect()
-            ->route('admin.user.index')
+            ->route('admin.role.index')
             ->with('success', 'Peran pengguna berhasil diperbarui.');
     }
 
@@ -58,7 +58,7 @@ class RoleController extends Controller
         ActivityLog::catat('Menghapus Role', "Role: {$namaRole}");
 
         return redirect()
-            ->route('admin.user.index')
+            ->route('admin.role.index')
             ->with('success', 'Peran pengguna berhasil dihapus.');
     }
 }

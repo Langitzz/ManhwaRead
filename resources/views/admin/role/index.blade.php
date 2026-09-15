@@ -77,7 +77,7 @@
                                                     data-bs-target="#modalEditRole{{ $role->id }}">
                                                     Ubah
                                                 </button>
-                                                <form action="{{ route('admin.user.destroy', $role->id) }}" method="POST"
+                                                <form action="{{ route('admin.role.destroy', $role->id) }}" method="POST"
                                                     class="d-inline"
                                                     onsubmit="return confirm('Yakin ingin menghapus role ini?')">
                                                     @csrf
@@ -109,7 +109,7 @@
     <div class="modal fade" id="modalTambahRole" tabindex="-1" aria-labelledby="modalTambahRoleLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{ route('admin.user.store') }}" method="POST">
+                <form action="{{ route('admin.role.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalTambahRoleLabel">
@@ -159,7 +159,7 @@
             aria-labelledby="modalEditRoleLabel{{ $role->id }}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="{{ route('admin.user.update', $role->id) }}" method="POST">
+                    <form action="{{ route('admin.role.update', $role->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="modal-header">

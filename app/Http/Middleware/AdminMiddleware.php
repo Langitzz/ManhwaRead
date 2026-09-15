@@ -12,7 +12,7 @@ class AdminMiddleware
      * Pemetaan awalan nama route ke key Permission (grup menu).
      */
     protected array $routeToPermission = [
-        'admin.user.' => 'admin',
+        'admin.role.' => 'admin',
         'admin.access.' => 'admin',
         'admin.log.' => 'admin',
         'backup.' => 'backup',

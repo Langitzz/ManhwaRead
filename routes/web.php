@@ -149,14 +149,14 @@ Route::prefix('admin')
 
         // Role User
         Route::get('/role-user', [RoleController::class, 'index'])
-            ->name('admin.user.index');
+            ->name('admin.role.index');
         Route::post('/role-user', [RoleController::class, 'store'])
-            ->name('admin.user.store');
+            ->name('admin.role.store');
         Route::put('/role-user/{role}', [RoleController::class, 'update'])
-            ->name('admin.user.update');
+            ->name('admin.role.update');
         Route::delete('/role-user/{role}', [RoleController::class, 'destroy'])
-            ->name('admin.user.destroy');
-
+            ->name('admin.role.destroy');
+            
         // Hak Akses
         Route::get('/hak-akses', [HakAksesController::class, 'index'])
             ->name('admin.access.index');
@@ -167,10 +167,6 @@ Route::prefix('admin')
         Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])
             ->name('admin.log.index');
     });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])

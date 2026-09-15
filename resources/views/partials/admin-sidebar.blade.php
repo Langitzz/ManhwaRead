@@ -38,9 +38,9 @@
 
                 @if (in_array('master_data', $userPermissions))
                     <li
-                        class="nav-item {{ request()->routeIs('genre.*', 'manhwa.*', 'chapter.*') ? 'menu-open' : '' }}">
+                        class="nav-item {{ request()->routeIs('genre.*', 'manhwa.*', 'chapter.*', 'banner.*') ? 'menu-open' : '' }}">
                         <a href="javascript:void(0)"
-                            class="nav-link {{ request()->routeIs('genre.*', 'manhwa.*', 'chapter.*') ? 'active' : '' }}">
+                            class="nav-link {{ request()->routeIs('genre.*', 'manhwa.*', 'chapter.*', 'banner.*') ? 'active' : '' }}">
                             <i class="nav-icon bi bi-folder"></i>
                             <p>
                                 Master Data
@@ -148,9 +148,9 @@
 
             @if (in_array('admin', $userPermissions))
                 <li
-                    class="nav-item {{ request()->routeIs('admin.user.*', 'admin.access.*', 'admin.log.*') ? 'menu-open' : '' }}">
+                    class="nav-item {{ request()->routeIs('admin.role.*', 'admin.access.*', 'admin.log.*') ? 'menu-open' : '' }}">
                     <a href="javascript:void(0)"
-                        class="nav-link {{ request()->routeIs('admin.user.*', 'admin.access.*', 'admin.log.*') ? 'active' : '' }}">
+                        class="nav-link {{ request()->routeIs('admin.role.*', 'admin.access.*', 'admin.log.*') ? 'active' : '' }}">
                         <i class="nav-icon bi bi-shield-lock"></i>
                         <p>
                             Admin
@@ -160,8 +160,8 @@
 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('admin.user.index') }}"
-                                class="nav-link {{ request()->routeIs('admin.user.*') ? 'active' : '' }}">
+                            <a href="{{ route('admin.role.index') }}"
+                                class="nav-link {{ request()->routeIs('admin.role.*') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-person-gear"></i>
                                 <p>Role User</p>
                             </a>
