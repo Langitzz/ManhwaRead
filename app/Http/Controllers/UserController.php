@@ -17,6 +17,8 @@ class UserController extends Controller
     {
         $banners = Banner::where('status', true)->orderBy('urutan')->get();
 
+        $heroManhwa = Manhwa::orderByDesc('views')->take(4)->get();
+
         $genrePopuler = Genre::withCount('manhwas')->orderByDesc('manhwas_count')->take(12)->get();
 
         $manhwaPopuler = Manhwa::withMax('chapters', 'nomor_chapter')
@@ -30,7 +32,7 @@ class UserController extends Controller
             ->take(8)
             ->get();
 
-        return view('user.home', compact('banners', 'genrePopuler', 'manhwaPopuler', 'manhwaTerbaru'));
+        return view('user.home', compact('banners', 'heroManhwa', 'genrePopuler', 'manhwaPopuler', 'manhwaTerbaru'));
     }
 
     public function manhwa()
@@ -62,9 +64,9 @@ class UserController extends Controller
 
         $chapterDibacaIds = Auth::check()
             ? ChapterRead::where('user_id', Auth::id())
-            ->whereIn('chapter_id', $manhwa->chapters->pluck('id'))
-            ->pluck('chapter_id')
-            ->toArray()
+                ->whereIn('chapter_id', $manhwa->chapters->pluck('id'))
+                ->pluck('chapter_id')
+                ->toArray()
             : [];
 
         return view('user.manhwa-detail', compact(
@@ -157,7 +159,7 @@ class UserController extends Controller
             ->withMax('chapters', 'tanggal_rilis');
 
         if ($request->filled('q')) {
-            $query->where('judul', 'like', '%' . $request->q . '%');
+            $query->where('judul', 'like', '%'.$request->q.'%');
         }
 
         if ($request->filled('status')) {

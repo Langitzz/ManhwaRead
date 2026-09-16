@@ -1,3 +1,16 @@
+<style>
+    .app-sidebar[data-bs-theme="dark"] {
+        --lte-sidebar-hover-bg: rgba(13, 202, 240, 0.12);
+        --lte-sidebar-hover-color: #0dcaf0;
+        --lte-sidebar-menu-active-bg: rgba(13, 202, 240, 0.18);
+        --lte-sidebar-menu-active-color: #0dcaf0;
+        --lte-sidebar-submenu-color: #0dcaf0;
+        --lte-sidebar-submenu-hover-color: #0dcaf0;
+        --lte-sidebar-submenu-hover-bg: rgba(13, 202, 240, 0.12);
+        --lte-sidebar-submenu-active-color: #0dcaf0;
+        --lte-sidebar-submenu-active-bg: rgba(13, 202, 240, 0.18);
+    }
+</style>
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
     <!--begin::Sidebar Brand-->
     <div class="sidebar-brand">

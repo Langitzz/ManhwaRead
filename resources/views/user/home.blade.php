@@ -3,6 +3,64 @@
 @section('title', 'Home')
 
 @section('content')
+    <style>
+        .hero-collage {
+            position: relative;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-collage-item {
+            --rotate: 0deg;
+            --tx: 0px;
+            --ty: 0px;
+            --scale: 1;
+            position: absolute;
+            width: 160px;
+            height: 226px;
+            object-fit: cover;
+            border-radius: 14px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+            transform: rotate(var(--rotate)) translate(var(--tx), var(--ty)) scale(var(--scale));
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
+
+        .hero-collage-item:hover {
+            --scale: 1.08;
+            z-index: 10 !important;
+        }
+
+        .hero-collage-item-0 {
+            --rotate: -10deg;
+            --tx: -95px;
+            --ty: 15px;
+            z-index: 1;
+        }
+
+        .hero-collage-item-1 {
+            --rotate: -3deg;
+            --tx: -32px;
+            --ty: -8px;
+            z-index: 2;
+        }
+
+        .hero-collage-item-2 {
+            --rotate: 4deg;
+            --tx: 32px;
+            --ty: -8px;
+            z-index: 3;
+        }
+
+        .hero-collage-item-3 {
+            --rotate: 11deg;
+            --tx: 95px;
+            --ty: 15px;
+            z-index: 2;
+        }
+    </style>
     <!-- Hero Section -->
     <section class="hero section">
         <div class="container">
@@ -27,10 +85,23 @@
                     </div>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="{{ asset('assets/blogy/assets/img/blog/blog-post-3.webp') }}"
-                        class="img-fluid rounded-4 shadow" alt="Hero">
+                    @forelse ($heroManhwa as $index => $manhwa)
+                        @if ($loop->first)
+                            <div class="hero-collage">
+                        @endif
+
+                        <img src="{{ $manhwa->cover ? asset('storage/' . $manhwa->cover) : asset('assets/blogy/assets/img/blog/blog-post-3.webp') }}"
+                            class="hero-collage-item hero-collage-item-{{ $index }}" alt="{{ $manhwa->judul }}">
+
+                        @if ($loop->last)
                 </div>
+                @endif
+            @empty
+                <img src="{{ asset('assets/blogy/assets/img/blog/blog-post-3.webp') }}" class="img-fluid rounded-4 shadow"
+                    alt="Hero">
+                @endforelse
             </div>
+        </div>
         </div>
     </section>
 
