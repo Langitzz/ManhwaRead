@@ -140,6 +140,10 @@ Route::prefix('admin')
             ->name('riwayat.destroy');
 
         // Users
+        Route::get('/users/create', [AdminUserController::class, 'create'])
+            ->name('user.create');
+        Route::post('/users', [AdminUserController::class, 'store'])
+            ->name('user.store');
         Route::get('/users', [AdminUserController::class, 'index'])
             ->name('user.index');
         Route::put('/users/{user}', [AdminUserController::class, 'update'])
@@ -156,7 +160,7 @@ Route::prefix('admin')
             ->name('admin.role.update');
         Route::delete('/role-user/{role}', [RoleController::class, 'destroy'])
             ->name('admin.role.destroy');
-            
+
         // Hak Akses
         Route::get('/hak-akses', [HakAksesController::class, 'index'])
             ->name('admin.access.index');
