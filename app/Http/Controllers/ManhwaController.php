@@ -7,14 +7,27 @@ use App\Models\Manhwa;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ManhwaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $manhwas = Manhwa::with('genres')->orderBy('judul')->get();
+        $manhwas = Manhwa::with('genres')
+            ->when($request->filled('cari'), function ($query) use ($request) {
+                $query->where('judul', 'like', '%' . $request->cari . '%');
+            })
+            ->when($request->filled('genre_id'), function ($query) use ($request) {
+                $query->whereHas('genres', function ($q) use ($request) {
+                    $q->where('genres.id', $request->genre_id);
+                });
+            })
+            ->orderBy('judul')
+            ->get();
 
-        return view('admin.manhwa.index', compact('manhwas'));
+        $genres = Genre::orderBy('nama_genre')->get();
+
+        return view('admin.manhwa.index', compact('manhwas', 'genres'));
     }
 
     public function create()
@@ -83,6 +96,10 @@ class ManhwaController extends Controller
         $data['slug'] = Str::slug($data['judul']);
 
         if ($request->hasFile('cover')) {
+            if ($manhwa->cover) {
+                Storage::disk('public')->delete($manhwa->cover);
+            }
+
             $data['cover'] = $request->file('cover')->store('manhwa-cover', 'public');
         }
 
@@ -100,6 +117,16 @@ class ManhwaController extends Controller
     public function destroy(Manhwa $manhwa)
     {
         $judulManhwa = $manhwa->judul;
+
+        if ($manhwa->cover) {
+            Storage::disk('public')->delete($manhwa->cover);
+        }
+
+        foreach ($manhwa->chapters as $chapter) {
+            foreach ($chapter->pages as $page) {
+                Storage::disk('public')->delete($page->gambar);
+            }
+        }
 
         $manhwa->delete();
 

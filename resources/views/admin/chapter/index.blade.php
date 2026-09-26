@@ -45,31 +45,30 @@
                 {{-- Card Body --}}
                 <div class="card-body">
                     {{-- Filter --}}
-                    <div class="row mb-3">
+                    <form action="{{ route('chapter.index') }}" method="GET" class="row mb-3 g-2">
                         <div class="col-md-4">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Cari chapter...">
-                                <button class="btn btn-outline-secondary" type="button">
+                                <input type="text" name="cari" class="form-control"
+                                    placeholder="Cari judul/nomor chapter..." value="{{ request('cari') }}">
+                                <button class="btn btn-outline-secondary" type="submit">
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <form action="{{ route('chapter.index') }}" method="GET">
-                                <select name="manhwa_id" class="form-select" onchange="this.form.submit()">
-                                    <option value="" {{ request('manhwa_id') == '' ? 'selected' : '' }}>
-                                        Semua Manhwa
+                            <select name="manhwa_id" class="form-select" onchange="this.form.submit()">
+                                <option value="" {{ request('manhwa_id') == '' ? 'selected' : '' }}>
+                                    Semua Manhwa
+                                </option>
+                                @foreach ($manhwas as $manhwa)
+                                    <option value="{{ $manhwa->id }}"
+                                        {{ request('manhwa_id') == $manhwa->id ? 'selected' : '' }}>
+                                        {{ $manhwa->judul }}
                                     </option>
-                                    @foreach ($manhwas as $manhwa)
-                                        <option value="{{ $manhwa->id }}"
-                                            {{ request('manhwa_id') == $manhwa->id ? 'selected' : '' }}>
-                                            {{ $manhwa->judul }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </form>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
+                    </form>
 
                     {{-- Table --}}
                     <div class="table-responsive">

@@ -45,21 +45,14 @@
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                 </div>
 
-                {{-- Remember & Lupa Password sejajar --}}
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                {{-- Remember Me --}}
+                <div class="mb-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="remember_me" name="remember">
                         <label class="form-check-label" for="remember_me" style="color:#e5e7eb;">
                             Ingat Saya
                         </label>
                     </div>
-
-                    @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}" class="text-decoration-none"
-                            style="color:#60a5fa; font-size:14px;">
-                            Lupa Password?
-                        </a>
-                    @endif
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100"

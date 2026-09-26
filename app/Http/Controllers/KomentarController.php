@@ -14,8 +14,12 @@ class KomentarController extends Controller
             ->when($request->filled('cari'), function ($query) use ($request) {
                 $query->where('isi', 'like', '%' . $request->cari . '%');
             })
+            ->when($request->filled('status'), function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
             ->latest()
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('admin.komentar.index', compact('comments'));
     }

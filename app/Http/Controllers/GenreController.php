@@ -61,6 +61,14 @@ class GenreController extends Controller
 
     public function destroy(Genre $genre)
     {
+        $jumlahManhwa = $genre->manhwas()->count();
+
+        if ($jumlahManhwa > 0) {
+            return redirect()
+                ->route('genre.index')
+                ->with('error', "Genre ini masih dipakai oleh {$jumlahManhwa} manhwa, tidak bisa dihapus.");
+        }
+
         $namaGenre = $genre->nama_genre;
 
         $genre->delete();

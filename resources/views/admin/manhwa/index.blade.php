@@ -46,16 +46,28 @@
                     {{-- Card Body --}}
                     <div class="card-body">
                         {{-- Search --}}
-                        <div class="row mb-3">
-                            <div class="col-md-4">
+                        <form action="{{ route('manhwa.index') }}" method="GET" class="row mb-3 g-2">
+                            <div class="col-md-5">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Cari judul manhwa...">
-                                    <button class="btn btn-outline-secondary" type="button">
+                                    <input type="text" name="cari" class="form-control"
+                                        placeholder="Cari judul manhwa..." value="{{ request('cari') }}">
+                                    <button class="btn btn-outline-secondary" type="submit">
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-md-4">
+                                <select name="genre_id" class="form-select" onchange="this.form.submit()">
+                                    <option value="">Semua Genre</option>
+                                    @foreach ($genres as $genre)
+                                        <option value="{{ $genre->id }}"
+                                            {{ request('genre_id') == $genre->id ? 'selected' : '' }}>
+                                            {{ $genre->nama_genre }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
 
                         {{-- Table --}}
                         <div class="table-responsive">

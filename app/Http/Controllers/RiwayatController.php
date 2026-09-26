@@ -17,7 +17,8 @@ class RiwayatController extends Controller
                 });
             })
             ->latest('updated_at')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('admin.riwayat.index', compact('riwayats'));
     }

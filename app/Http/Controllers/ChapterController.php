@@ -6,12 +6,19 @@ use App\Models\ActivityLog;
 use App\Models\Chapter;
 use App\Models\Manhwa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ChapterController extends Controller
 {
     public function index(Request $request)
     {
         $chapters = Chapter::with('manhwa')
+            ->when($request->filled('cari'), function ($query) use ($request) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('judul_chapter', 'like', '%' . $request->cari . '%')
+                        ->orWhere('nomor_chapter', 'like', '%' . $request->cari . '%');
+                });
+            })
             ->when($request->filled('manhwa_id'), function ($query) use ($request) {
                 $query->where('manhwa_id', $request->manhwa_id);
             })
@@ -77,6 +84,10 @@ class ChapterController extends Controller
     public function destroy(Chapter $chapter)
     {
         $infoChapter = "Chapter {$chapter->nomor_chapter} - {$chapter->manhwa->judul}";
+
+        foreach ($chapter->pages as $page) {
+            Storage::disk('public')->delete($page->gambar);
+        }
 
         $chapter->delete();
 

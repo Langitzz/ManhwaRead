@@ -15,7 +15,8 @@ class LogAktivitasController extends Controller
                     ->orWhere('detail', 'like', '%' . $request->cari . '%');
             })
             ->latest()
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('admin.log-aktivitas.index', compact('logs'));
     }

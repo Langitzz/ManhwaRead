@@ -58,6 +58,14 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        if (! Auth::user()->status) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'login' => 'Akun Anda telah dinonaktifkan. Hubungi admin untuk info lebih lanjut.',
+            ]);
+        }
     }
 
     /**

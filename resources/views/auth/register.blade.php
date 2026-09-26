@@ -51,6 +51,7 @@
                     style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
                         background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
                     <i class="bi bi-eye toggle-password-icon"></i>
+                </button>
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -70,6 +71,7 @@
                     style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
                         background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
                     <i class="bi bi-eye toggle-password-icon"></i>
+                </button>
             </div>
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>

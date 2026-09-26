@@ -34,15 +34,22 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('komentar.index') }}" method="GET" class="row mb-3">
-                        <div class="col-md-4">
+                    <form action="{{ route('komentar.index') }}" method="GET" class="row mb-3 g-2">
+                        <div class="col-md-5">
                             <div class="input-group">
-                                <input type="text" name="cari" class="form-control"
-                                    placeholder="Cari komentar..." value="{{ request('cari') }}">
+                                <input type="text" name="cari" class="form-control" placeholder="Cari komentar..."
+                                    value="{{ request('cari') }}">
                                 <button type="submit" class="btn btn-outline-secondary">
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                <option value="">Semua Status</option>
+                                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Nonaktif</option>
+                            </select>
                         </div>
                     </form>
 
@@ -62,7 +69,8 @@
                             <tbody>
                                 @forelse ($comments as $comment)
                                     <tr>
-                                        <td>{{ $loop->iteration + ($comments->currentPage() - 1) * $comments->perPage() }}</td>
+                                        <td>{{ $loop->iteration + ($comments->currentPage() - 1) * $comments->perPage() }}
+                                        </td>
                                         <td>{{ $comment->user->name }}</td>
                                         <td>{{ $comment->manhwa->judul }}</td>
                                         <td>{{ \Illuminate\Support\Str::limit($comment->isi, 60) }}</td>

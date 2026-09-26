@@ -37,12 +37,43 @@
                     </a>
                 </div>
                 <div class="card-body">
+                    <form action="{{ route('user.index') }}" method="GET" class="row mb-3 g-2">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input type="text" name="cari" class="form-control"
+                                    placeholder="Cari nama/email/username..." value="{{ request('cari') }}">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="role_id" class="form-select" onchange="this.form.submit()">
+                                <option value="">Semua Role</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}"
+                                        {{ request('role_id') == $role->id ? 'selected' : '' }}>
+                                        {{ $role->nama_peran }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                <option value="">Semua Status</option>
+                                <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Nonaktif</option>
+                            </select>
+                        </div>
+                    </form>
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
                                     <th width="70">No</th>
                                     <th>Nama</th>
+                                    <th>Username</th>
                                     <th>Email</th>
                                     <th width="120">Role</th>
                                     <th width="120">Status</th>
@@ -54,6 +85,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $user->name }}</td>
+                                        <td>{{ $user->username }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
                                             <span class="badge bg-secondary">
@@ -140,7 +172,7 @@
                                     </div>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-5">
+                                        <td colspan="7" class="text-center py-5">
                                             <i class="bi bi-inbox fs-1 text-secondary"></i>
                                             <p class="text-muted mt-3 mb-0">
                                                 Belum ada data user.

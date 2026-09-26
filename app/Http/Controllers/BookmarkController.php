@@ -17,7 +17,8 @@ class BookmarkController extends Controller
                 });
             })
             ->latest()
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         return view('admin.bookmark.index', compact('bookmarks'));
     }

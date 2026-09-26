@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['nama_peran', 'deskripsi', 'status'])]
+#[Fillable(['nama_peran', 'slug', 'deskripsi', 'status'])]
 class Role extends Model
 {
     protected function casts(): array
@@ -15,11 +15,6 @@ class Role extends Model
         return [
             'status' => 'boolean',
         ];
-    }
-
-    public function manhwas(): BelongsToMany
-    {
-        return $this->belongsToMany(Manhwa::class);
     }
 
     public function permissions(): BelongsToMany

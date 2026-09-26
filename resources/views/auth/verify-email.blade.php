@@ -1,31 +1,42 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+
+    <div class="text-center mb-3">
+        <h2 class="fw-bold mb-1" style="color:#f8fafc;">
+            Verifikasi Email
+        </h2>
+        <p class="mb-0" style="color:#94a3b8;">
+            Terima kasih sudah mendaftar! Sebelum mulai, tolong verifikasi alamat email kamu dengan
+            klik link yang sudah kami kirimkan. Kalau belum dapat emailnya, kami akan kirimkan lagi.
+        </p>
     </div>
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
-        </div>
-    @endif
+    <div class="card"
+        style="border-radius:16px; border:none; background:#1f2937; box-shadow:0 8px 25px rgba(0,0,0,.25);">
+        <div class="card-body p-4">
 
-    <div class="mt-4 flex items-center justify-between">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
+            @if (session('status') == 'verification-link-sent')
+                <div class="alert alert-success" role="alert">
+                    Link verifikasi baru sudah dikirim ke alamat email yang kamu daftarkan.
+                </div>
+            @endif
 
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
+            <div class="d-flex align-items-center justify-content-between">
+                <form method="POST" action="{{ route('verification.send') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary" style="border-radius:50px; font-weight:600;">
+                        Kirim Ulang Email Verifikasi
+                    </button>
+                </form>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-link p-0" style="color:#94a3b8; text-decoration:underline;">
+                        Keluar
+                    </button>
+                </form>
             </div>
-        </form>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-
-            <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                {{ __('Log Out') }}
-            </button>
-        </form>
+        </div>
     </div>
+
 </x-guest-layout>
