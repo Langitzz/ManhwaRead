@@ -45,7 +45,7 @@
                 {{-- Card Body --}}
                 <div class="card-body">
                     {{-- Filter --}}
-                    <form action="{{ route('chapter.index') }}" method="GET" class="row mb-3 g-2">
+                    <form action="{{ route('chapter.index') }}" method="GET" class="row mb-3 g-2" autocomplete="off">
                         <div class="col-md-4">
                             <div class="input-group">
                                 <input type="text" name="cari" class="form-control"
@@ -77,9 +77,9 @@
                                 <tr>
                                     <th width="70">No</th>
                                     <th>Manhwa</th>
-                                    <th width="140">Chapter</th>
+                                    <th width="200">Chapter</th>
                                     <th width="180">Tanggal Rilis</th>
-                                    <th width="180">Aksi</th>
+                                    <th width="170">Aksi</th>
                                 </tr>
                             </thead>
 
@@ -87,30 +87,36 @@
                                 @forelse ($chapters as $chapter)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $chapter->manhwa->judul }}</td>
+                                        <td class="fw-semibold">{{ $chapter->manhwa->judul }}</td>
                                         <td>
-                                            Chapter {{ $chapter->nomor_chapter }}
+                                            <span class="badge bg-primary">
+                                                Chapter {{ $chapter->nomor_chapter }}
+                                            </span>
                                             @if ($chapter->judul_chapter)
-                                                <br><small class="text-muted">{{ $chapter->judul_chapter }}</small>
+                                                <div class="small text-muted mt-1">{{ $chapter->judul_chapter }}</div>
                                             @endif
                                         </td>
                                         <td>
-                                            {{ $chapter->tanggal_rilis?->format('d M Y') ?? '-' }}
+                                            <span class="text-muted">
+                                                <i class="bi bi-calendar3 me-1"></i>
+                                                {{ $chapter->tanggal_rilis?->format('d M Y') ?? '-' }}
+                                            </span>
                                         </td>
                                         <td>
                                             <a href="{{ route('chapter.pages.index', $chapter) }}"
-                                                class="btn btn-sm btn-info" title="Kelola Halaman">
+                                                class="btn btn-sm btn-info" title="Kelola halaman">
                                                 <i class="bi bi-images"></i>
                                             </a>
-                                            <a href="{{ route('chapter.edit', $chapter) }}" class="btn btn-sm btn-warning">
+                                            <a href="{{ route('chapter.edit', $chapter) }}"
+                                                class="btn btn-sm btn-warning" title="Edit chapter">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="{{ route('chapter.destroy', $chapter) }}" method="POST"
                                                 class="d-inline"
-                                                onsubmit="return confirm('Yakin ingin menghapus chapter ini?')">
+                                                data-confirm="Yakin ingin menghapus chapter ini?">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus chapter">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
@@ -133,5 +139,4 @@
             </div>
         </div>
     </div>
-    </main>
 @endsection

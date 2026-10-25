@@ -26,7 +26,7 @@
 
     <div class="app-content">
         <div class="container-fluid">
-            <div class="card"
+            <div class="card">
 
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('admin.log.index') }}" method="GET" class="row mb-3">
+                    <form action="{{ route('admin.log.index') }}" method="GET" class="row mb-3" autocomplete="off">
                         <div class="col-md-4">
                             <div class="input-group">
                                 <input type="text" name="cari" class="form-control"

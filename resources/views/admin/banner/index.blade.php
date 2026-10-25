@@ -45,11 +45,11 @@
                             <thead class="table-light">
                                 <tr>
                                     <th width="80">No</th>
-                                    <th width="140">Gambar</th>
+                                    <th width="170">Gambar</th>
                                     <th>Judul</th>
-                                    <th width="100">Urutan</th>
+                                    <th width="110">Urutan</th>
                                     <th width="120">Status</th>
-                                    <th width="180">Aksi</th>
+                                    <th width="130">Aksi</th>
                                 </tr>
                             </thead>
 
@@ -58,17 +58,31 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>
-                                            <img src="{{ asset('storage/' . $banner->gambar) }}"
-                                                alt="{{ $banner->judul }}" style="height: 50px;" class="rounded">
+                                            @if ($banner->gambar)
+                                                <img src="{{ asset('storage/' . $banner->gambar) }}"
+                                                    alt="{{ $banner->judul }}"
+                                                    class="rounded border"
+                                                    style="width: 150px; height: 60px; object-fit: cover;"
+                                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            @endif
+
+                                            <div class="rounded border align-items-center justify-content-center"
+                                                style="width: 150px; height: 60px; display: {{ $banner->gambar ? 'none' : 'flex' }};
+                                                    background: linear-gradient(135deg, #312e81 0%, #0f172a 100%); color: #818cf8;">
+                                                <i class="bi bi-image"></i>
+                                            </div>
                                         </td>
                                         <td>
-                                            {{ $banner->judul }}
+                                            <div class="fw-semibold">{{ $banner->judul }}</div>
                                             @if ($banner->link_url)
-                                                <br>
-                                                <small class="text-muted">{{ $banner->link_url }}</small>
+                                                <div class="small text-muted text-truncate" style="max-width: 360px;">
+                                                    <i class="bi bi-link-45deg"></i>{{ $banner->link_url }}
+                                                </div>
                                             @endif
                                         </td>
-                                        <td>{{ $banner->urutan }}</td>
+                                        <td>
+                                            <span class="badge bg-primary">#{{ $banner->urutan }}</span>
+                                        </td>
                                         <td>
                                             @if ($banner->status)
                                                 <span class="badge bg-success">Aktif</span>
@@ -78,15 +92,15 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('banner.edit', $banner) }}"
-                                                class="btn btn-sm btn-warning">
+                                                class="btn btn-sm btn-warning" title="Edit banner">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <form action="{{ route('banner.destroy', $banner) }}" method="POST"
                                                 class="d-inline"
-                                                onsubmit="return confirm('Yakin ingin menghapus banner ini?')">
+                                                data-confirm="Yakin ingin menghapus banner ini?">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus banner">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>

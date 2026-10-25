@@ -148,7 +148,7 @@
                             </h3>
                         </div>
                         <div class="card-body p-0">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover mb-0 leaderboard">
                                 <tbody>
                                     @forelse ($manhwaPopuler as $i => $manhwa)
                                         <tr>
@@ -176,7 +176,7 @@
                             </h3>
                         </div>
                         <div class="card-body p-0">
-                            <table class="table table-hover mb-0">
+                            <table class="table table-hover mb-0 leaderboard">
                                 <tbody>
                                     @forelse ($manhwaRatingTertinggi as $i => $manhwa)
                                         <tr>
@@ -456,11 +456,17 @@
                 </div>
             </div>
             <!--end::Row Chart-->
-        <!--end::Container-->
+            <!--end::Container-->
         </div>
         <!--end::App Content-->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Warna teks dan garis chart mengikuti tema (terang / gelap)
+                const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+                Chart.defaults.color = isDark ? '#cbd5e1' : '#475569';
+                Chart.defaults.borderColor = isDark ? 'rgba(148, 163, 184, .15)' : 'rgba(15, 23, 42, .08)';
+                Chart.defaults.font.family = "'Source Sans 3', system-ui, sans-serif";
+
                 // Chart 1: Donut Status Manhwa
                 new Chart(document.getElementById('chartStatusManhwa'), {
                     type: 'doughnut',
@@ -469,11 +475,14 @@
                         datasets: [{
                             data: @json(array_values($chartStatusManhwa)),
                             backgroundColor: ['#198754', '#0d6efd', '#ffc107'],
+                            borderColor: isDark ? '#1e293b' : '#ffffff',
+                            borderWidth: 3,
                         }],
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        cutout: '65%',
                         plugins: {
                             legend: {
                                 position: 'bottom',
@@ -498,6 +507,7 @@
                             label: 'Jumlah Manhwa',
                             data: @json($chartGenreTerpopuler->pluck('manhwas_count')),
                             backgroundColor: '#0d6efd',
+                            borderRadius: 6,
                         }],
                     },
                     options: {
@@ -529,6 +539,7 @@
                             label: 'User Baru',
                             data: @json($chartUserBaru->pluck('jumlah')),
                             backgroundColor: '#20c997',
+                            borderRadius: 6,
                         }],
                     },
                     options: {

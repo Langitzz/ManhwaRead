@@ -46,7 +46,7 @@
                     {{-- Card Body --}}
                     <div class="card-body">
                         {{-- Search --}}
-                        <form action="{{ route('manhwa.index') }}" method="GET" class="row mb-3 g-2">
+                        <form action="{{ route('manhwa.index') }}" method="GET" class="row mb-3 g-2" autocomplete="off">
                             <div class="col-md-5">
                                 <div class="input-group">
                                     <input type="text" name="cari" class="form-control"
@@ -92,11 +92,18 @@
                                                     <img src="{{ asset('storage/' . $manhwa->cover) }}"
                                                         alt="{{ $manhwa->judul }}"
                                                         style="width: 60px; height: 80px; object-fit: cover;"
-                                                        class="rounded border">
-                                                @else
-                                                    <span class="text-muted small">Tidak ada</span>
+                                                        class="rounded border"
+                                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                                                 @endif
-                                            </td>
+
+                                                <div class="rounded border text-center"
+                                                    style="width: 60px; height: 80px; display: {{ $manhwa->cover ? 'none' : 'flex' }};
+                                                        flex-direction: column; align-items: center; justify-content: center;
+                                                        background: linear-gradient(160deg, #312e81 0%, #0f172a 100%); color: #c7d2fe; font-size: 9px; padding: 4px; overflow: hidden;">
+                                                    <i class="bi bi-image" style="font-size: 1.1rem; color: #818cf8;"></i>
+                                                    <span class="mt-1 text-truncate w-100">{{ $manhwa->judul }}</span>
+                                                </div>
+                                            </td>   
                                             <td>
                                                 {{ $manhwa->judul }}
                                                 @if ($manhwa->penulis)
@@ -130,7 +137,7 @@
 
                                                 <form action="{{ route('manhwa.destroy', $manhwa) }}" method="POST"
                                                     class="d-inline"
-                                                    onsubmit="return confirm('Yakin ingin menghapus manhwa ini?')">
+                                                    data-confirm="Yakin ingin menghapus manhwa ini?">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger">

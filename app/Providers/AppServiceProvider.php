@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Models\SiteSetting;
-use Illuminate\Support\Facades\View;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,5 +25,12 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         View::share('siteSetting', SiteSetting::first());
+
+        View::composer('partials.user-header', function ($view) {
+            if (auth()->check()) {
+                $view->with('notifikasiBelumDibaca', auth()->user()->unreadNotifications()->count());
+                $view->with('notifikasiTerbaru', auth()->user()->notifications()->latest()->take(8)->get());
+            }
+        });
     }
 }

@@ -58,7 +58,7 @@ class AdminUserController extends Controller
         ActivityLog::catat('Menambahkan User', "User: {$user->name}");
 
         return redirect()
-            ->route('user.index')
+            ->back()
             ->with('success', 'User berhasil ditambahkan.');
     }
 
@@ -103,7 +103,7 @@ class AdminUserController extends Controller
         ActivityLog::catat('Mengubah User', "User: {$user->name}");
 
         return redirect()
-            ->route('user.index')
+            ->back()
             ->with('success', 'Data user berhasil diperbarui.');
     }
 
@@ -128,7 +128,7 @@ class AdminUserController extends Controller
         ActivityLog::catat('Menghapus User', "User: {$namaUser}");
 
         return redirect()
-            ->route('user.index')
+            ->back()
             ->with('success', 'User berhasil dihapus.');
     }
 }

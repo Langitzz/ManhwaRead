@@ -182,10 +182,11 @@ return [
     */
 
     'attributes' => [
+        'login' => 'email atau username',
+        'password' => 'Password',
         'name' => 'nama lengkap',
         'username' => 'username',
         'email' => 'email',
-        'password' => 'password',
         'phone' => 'nomor telepon',
         'address' => 'alamat',
     ],

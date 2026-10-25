@@ -1,78 +1,156 @@
 <x-guest-layout>
+    @include('auth.partials.login-styles')
 
-    <div class="text-center mb-3">
-        <h2 class="fw-bold mb-1" style="color:#f8fafc;">
-            Reset Password
-        </h2>
-        <p class="mb-0" style="color:#94a3b8;">
-            Masukkan password baru kamu di bawah ini.
-        </p>
-    </div>
+    <style>
+        body {
+            margin: 0;
+            background: #0b1120;
+        }
 
-    <div class="card"
-        style="border-radius:16px; border:none; background:#1f2937; box-shadow:0 8px 25px rgba(0,0,0,.25);">
-        <div class="card-body p-4">
+        .reset-wrap {
+            position: fixed;
+            inset: 0;
+            overflow-y: auto;
+            display: flex;
+            padding: 16px;
+            background:
+                radial-gradient(circle at 15% 10%, rgba(99,102,241,.18), transparent 40%),
+                radial-gradient(circle at 85% 90%, rgba(34,211,238,.12), transparent 40%),
+                #0b1120;
+        }
 
-            <form method="POST" action="{{ route('password.store') }}">
-                @csrf
+        .reset-wrap > div {
+            margin: auto;
+        }
 
-                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        @keyframes reset-rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: none; }
+        }
 
-                <div class="mb-3">
-                    <x-input-label for="email" value="Email" class="text-light" />
-                    <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}" required
-                        autofocus autocomplete="username" class="form-control" placeholder="nama@email.com"
-                        style="margin-top:8px; height:50px; border-radius:12px; background:#111827;
-                            color:#f8fafc; border-color:#4b5563;">
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        .reset-card {
+            animation: reset-rise .6s ease both;
+        }
+
+        .reset-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.9rem;
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, .35);
+        }
+
+        #reset-btn .btn-spinner {
+            display: none;
+        }
+
+        #reset-btn.is-loading .btn-label {
+            display: none;
+        }
+
+        #reset-btn.is-loading .btn-spinner {
+            display: inline-block;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reset-card {
+                animation: none;
+            }
+        }
+    </style>
+
+    <div class="reset-wrap">
+        <div style="width:100%; max-width:420px;">
+
+            <div class="text-center mb-4">
+                <div class="reset-icon mx-auto mb-3">
+                    <i class="bi bi-shield-check"></i>
                 </div>
+                <h2 class="fw-bold mb-1" style="color:#f8fafc;">Reset Password</h2>
+                <p class="mb-0" style="color:#94a3b8;">Masukkan password baru kamu di bawah ini.</p>
+            </div>
 
-                <div class="mb-3">
-                    <x-input-label for="password" value="Password Baru" class="text-light" />
-                    <div class="position-relative" style="margin-top:8px;">
-                        <input id="password" type="password" name="password" required autocomplete="new-password"
-                            class="form-control" placeholder="Masukkan password baru"
-                            style="height:50px; border-radius:12px; background:#111827;
-                                color:#f8fafc; border-color:#4b5563; padding-right:45px;">
-                        <button type="button" class="toggle-password" data-target="password"
-                            style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
-                                background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
-                            <i class="bi bi-eye toggle-password-icon"></i>
-                        </button>
+            <div class="auth-card reset-card p-4 p-md-5">
+
+                <form id="reset-form" method="POST" action="{{ route('password.store') }}" autocomplete="off">
+                    @csrf
+
+                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+                    {{-- Email --}}
+                    <div class="mb-3">
+                        <label for="email" class="auth-label">Email</label>
+                        <div class="auth-field">
+                            <i class="bi bi-envelope auth-icon"></i>
+                            <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}"
+                                required autofocus autocomplete="username"
+                                class="form-control auth-input {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                placeholder="nama@email.com">
+                        </div>
+                        @error('email')
+                            <div class="auth-error">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                </div>
 
-                <div class="mb-3">
-                    <x-input-label for="password_confirmation" value="Konfirmasi Password Baru" class="text-light" />
-                    <div class="position-relative" style="margin-top:8px;">
-                        <input id="password_confirmation" type="password" name="password_confirmation" required
-                            autocomplete="new-password" class="form-control" placeholder="Ulangi password baru"
-                            style="height:50px; border-radius:12px; background:#111827;
-                                color:#f8fafc; border-color:#4b5563; padding-right:45px;">
-                        <button type="button" class="toggle-password" data-target="password_confirmation"
-                            style="position:absolute; top:50%; right:12px; transform:translateY(-50%);
-                                background:none; border:none; padding:0; color:#94a3b8; cursor:pointer;">
-                            <i class="bi bi-eye toggle-password-icon"></i>
-                        </button>
+                    {{-- Password baru --}}
+                    <div class="mb-3">
+                        <label for="password" class="auth-label">Password Baru</label>
+                        <div class="auth-field">
+                            <i class="bi bi-lock auth-icon"></i>
+                            <input id="password" type="password" name="password" required autocomplete="new-password"
+                                class="form-control auth-input has-toggle {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                placeholder="Masukkan password baru">
+                            <button type="button" class="auth-toggle toggle-password" data-target="password" aria-label="Tampilkan password">
+                                <i class="bi bi-eye toggle-password-icon"></i>
+                            </button>
+                        </div>
+                        @error('password')
+                            <div class="auth-error">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-                </div>
 
-                <button type="submit" class="btn btn-primary w-100"
-                    style="border-radius:50px; height:50px; font-weight:600;">
-                    Reset Password
-                </button>
-            </form>
+                    {{-- Konfirmasi password baru --}}
+                    <div class="mb-4">
+                        <label for="password_confirmation" class="auth-label">Konfirmasi Password Baru</label>
+                        <div class="auth-field">
+                            <i class="bi bi-shield-check auth-icon"></i>
+                            <input id="password_confirmation" type="password" name="password_confirmation" required
+                                autocomplete="new-password"
+                                class="form-control auth-input has-toggle {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
+                                placeholder="Ulangi password baru">
+                            <button type="button" class="auth-toggle toggle-password" data-target="password_confirmation" aria-label="Tampilkan password">
+                                <i class="bi bi-eye toggle-password-icon"></i>
+                            </button>
+                        </div>
+                        @error('password_confirmation')
+                            <div class="auth-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button type="submit" id="reset-btn" class="auth-btn">
+                        <span class="btn-label">
+                            <i class="bi bi-check2-circle me-1"></i>
+                            Reset Password
+                        </span>
+                        <span class="btn-spinner spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
 
         </div>
     </div>
 
     <script>
+        // Lihat/sembunyikan password (dua field)
         document.querySelectorAll('.toggle-password').forEach(function(button) {
             button.addEventListener('click', function() {
-                const input = document.getElementById(button.dataset.target);
-                const icon = button.querySelector('.toggle-password-icon');
+                const input = document.getElementById(this.dataset.target);
+                const icon = this.querySelector('.toggle-password-icon');
                 const isPassword = input.type === 'password';
 
                 input.type = isPassword ? 'text' : 'password';
@@ -80,6 +158,19 @@
                 icon.classList.toggle('bi-eye-slash', isPassword);
             });
         });
-    </script>
 
+        // Tombol Reset Password berubah jadi spinner saat form dikirim
+        const resetForm = document.getElementById('reset-form');
+        const resetBtn = document.getElementById('reset-btn');
+
+        resetForm.addEventListener('submit', function() {
+            resetBtn.classList.add('is-loading');
+            resetBtn.disabled = true;
+        });
+
+        window.addEventListener('pageshow', function() {
+            resetBtn.classList.remove('is-loading');
+            resetBtn.disabled = false;
+        });
+    </script>
 </x-guest-layout>

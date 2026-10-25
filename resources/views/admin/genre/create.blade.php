@@ -27,7 +27,7 @@
 
         <div class="app-content">
             <div class="container-fluid">
-                <form action="{{ route('genre.store') }}" method="POST">
+                <form action="{{ route('genre.store') }}" method="POST" autocomplete="off">
                     @csrf
                     <div class="card">
                         <div class="card-header">

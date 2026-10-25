@@ -55,6 +55,6 @@ class SiteSettingController extends Controller
 
         ActivityLog::catat('Mengubah Pengaturan Situs');
 
-        return redirect()->route('pengaturan.edit')->with('status', 'pengaturan-updated');
+        return redirect()->back()->with('status', 'pengaturan-updated');
     }
 }

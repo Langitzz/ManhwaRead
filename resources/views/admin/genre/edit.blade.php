@@ -27,7 +27,7 @@
 
         <div class="app-content">
             <div class="container-fluid">
-                <form action="{{ route('genre.update', $genre) }}" method="POST">
+                <form action="{{ route('genre.update', $genre) }}" method="POST" autocomplete="off">
                     @csrf
                     @method('PUT')
                     <div class="card">

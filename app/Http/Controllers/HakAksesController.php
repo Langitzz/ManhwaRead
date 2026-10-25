@@ -11,7 +11,7 @@ class HakAksesController extends Controller
 {
     public function index()
     {
-        $roles = Role::orderBy('nama_peran')->get();
+        $roles = Role::whereNotIn('slug', ['owner', 'supervisor'])->orderBy('nama_peran')->get();
         $permissions = Permission::orderBy('id')->get();
 
         $matrix = [];

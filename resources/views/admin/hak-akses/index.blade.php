@@ -34,6 +34,10 @@
                 </div>
 
                 <div class="card-body">
+                    <p class="text-muted small mb-3">
+                        Centang permission untuk setiap role, lalu klik ikon simpan di baris role tersebut.
+                    </p>
+
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-light">
@@ -49,23 +53,29 @@
                             <tbody>
                                 @forelse ($roles as $role)
                                     <tr>
-                                        <form action="{{ route('admin.access.update', $role) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <td class="fw-semibold">{{ $role->nama_peran }}</td>
-                                            @foreach ($permissions as $permission)
-                                                <td class="text-center">
-                                                    <input type="checkbox" name="permission_ids[]"
-                                                        value="{{ $permission->id }}"
-                                                        {{ in_array($permission->id, $matrix[$role->id]) ? 'checked' : '' }}>
-                                                </td>
-                                            @endforeach
+                                        <td class="fw-semibold">{{ $role->nama_peran }}</td>
+
+                                        @foreach ($permissions as $permission)
                                             <td class="text-center">
-                                                <button type="submit" class="btn btn-sm btn-primary">
+                                                <input type="checkbox" class="form-check-input m-0"
+                                                    name="permission_ids[]"
+                                                    value="{{ $permission->id }}"
+                                                    form="form-role-{{ $role->id }}"
+                                                    {{ in_array($permission->id, $matrix[$role->id]) ? 'checked' : '' }}>
+                                            </td>
+                                        @endforeach
+
+                                        <td class="text-center">
+                                            <form id="form-role-{{ $role->id }}"
+                                                action="{{ route('admin.access.update', $role) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-sm btn-primary"
+                                                    title="Simpan hak akses {{ $role->nama_peran }}">
                                                     <i class="bi bi-save"></i>
                                                 </button>
-                                            </td>
-                                        </form>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>

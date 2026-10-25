@@ -9,9 +9,14 @@ use Illuminate\Support\Str;
 
 class RoleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::latest()->get();
+        $roles = Role::query()
+            ->when($request->filled('cari'), function ($query) use ($request) {
+                $query->where('nama_peran', 'like', '%' . $request->cari . '%');
+            })
+            ->latest()
+            ->get();
 
         return view('admin.role.index', compact('roles'));
     }

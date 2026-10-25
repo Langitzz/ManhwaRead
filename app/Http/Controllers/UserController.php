@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Banner;
 use App\Models\Chapter;
 use App\Models\ChapterRead;
+use App\Models\Comment;
 use App\Models\Genre;
 use App\Models\Manhwa;
 use App\Models\ReadingHistory;
@@ -26,18 +27,34 @@ class UserController extends Controller
             ->take(6)
             ->get();
 
-        $manhwaTerbaru = Manhwa::withMax('chapters', 'nomor_chapter')
-            ->withMax('chapters', 'tanggal_rilis')
-            ->orderByDesc('chapters_max_tanggal_rilis')
-            ->take(8)
-            ->get();
+        $manhwaTerbaru = Manhwa::withMax('chapters', 'created_at')
+            ->orderByDesc('chapters_max_created_at')
+            ->paginate(24, ['*'], 'halaman_terbaru');
 
-        return view('user.home', compact('banners', 'heroManhwa', 'genrePopuler', 'manhwaPopuler', 'manhwaTerbaru'));
+        $chapterTerbaru = Chapter::whereIn('manhwa_id', $manhwaTerbaru->getCollection()->pluck('id'))
+            ->orderByDesc('created_at')
+            ->get()
+            ->groupBy('manhwa_id');
+
+        $manhwaTerbaru->getCollection()->each(function ($manhwa) use ($chapterTerbaru) {
+            $manhwa->chapter_terbaru = $chapterTerbaru->get($manhwa->id, collect())->take(2);
+        });
+
+        $lanjutkanMembaca = Auth::check()
+            ? ReadingHistory::with(['manhwa', 'chapter'])
+                ->where('user_id', Auth::id())
+                ->latest('updated_at')
+                ->take(6)
+                ->get()
+                ->filter(fn ($riwayat) => $riwayat->manhwa && $riwayat->chapter)
+            : collect();
+
+        return view('user.home', compact('banners', 'heroManhwa', 'genrePopuler', 'manhwaPopuler', 'manhwaTerbaru', 'lanjutkanMembaca'));
     }
 
     public function manhwa()
     {
-        return view('user.manhwa');
+        return redirect()->route('explore');
     }
 
     public function detail(Manhwa $manhwa)
@@ -69,12 +86,24 @@ class UserController extends Controller
                 ->toArray()
             : [];
 
+        $semuaKomentar = Comment::with('user')
+            ->where('manhwa_id', $manhwa->id)
+            ->whereNull('chapter_id')
+            ->where('status', true)
+            ->oldest()
+            ->get();
+
+        $komentar = $semuaKomentar->whereNull('parent_id')->sortByDesc('created_at')->values();
+        $balasan = $semuaKomentar->whereNotNull('parent_id')->groupBy('parent_id');
+
         return view('user.manhwa-detail', compact(
             'manhwa',
             'jumlahBookmark',
             'sudahBookmark',
             'chapterUntukBaca',
-            'chapterDibacaIds'
+            'chapterDibacaIds',
+            'komentar',
+            'balasan'
         ));
     }
 
@@ -95,6 +124,10 @@ class UserController extends Controller
             ->orderBy('nomor_chapter')
             ->first();
 
+        $daftarChapter = Chapter::where('manhwa_id', $manhwa->id)
+            ->orderByDesc('nomor_chapter')
+            ->get(['id', 'nomor_chapter', 'judul_chapter']);
+
         $manhwa->increment('views');
 
         if (Auth::check()) {
@@ -109,11 +142,23 @@ class UserController extends Controller
             );
         }
 
+        $semuaKomentar = Comment::with('user')
+            ->where('chapter_id', $chapter->id)
+            ->where('status', true)
+            ->oldest()
+            ->get();
+
+        $komentar = $semuaKomentar->whereNull('parent_id')->sortByDesc('created_at')->values();
+        $balasan = $semuaKomentar->whereNotNull('parent_id')->groupBy('parent_id');
+
         return view('user.chapter-read', compact(
             'manhwa',
             'chapter',
             'chapterSebelumnya',
-            'chapterSelanjutnya'
+            'chapterSelanjutnya',
+            'daftarChapter',
+            'komentar',
+            'balasan'
         ));
     }
 

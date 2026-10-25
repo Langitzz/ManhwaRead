@@ -48,6 +48,26 @@
                             <td>{{ $comment->manhwa->judul }}</td>
                         </tr>
                         <tr>
+                            <th>Chapter</th>
+                            <td>
+                                @if ($comment->chapter)
+                                    Chapter {{ $comment->chapter->nomor_chapter }}
+                                @else
+                                    <span class="text-muted">Komentar umum (bukan chapter tertentu)</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Chapter</th>
+                            <td>
+                                @if ($comment->chapter)
+                                    Chapter {{ $comment->chapter->nomor_chapter }}
+                                @else
+                                    <span class="text-muted">Komentar umum (bukan chapter tertentu)</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Tanggal</th>
                             <td>{{ $comment->created_at->format('d M Y, H:i') }}</td>
                         </tr>
@@ -80,7 +100,7 @@
                         </button>
                     </form>
                     <form action="{{ route('komentar.destroy', $comment) }}" method="POST" class="d-inline"
-                        onsubmit="return confirm('Yakin ingin menghapus komentar ini?')">
+                        data-confirm="Yakin ingin menghapus komentar ini?">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">

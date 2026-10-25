@@ -1,8 +1,23 @@
 <a href="{{ isset($slug) ? route('manhwa.detail', $slug) : '#' }}" class="text-decoration-none text-dark">
+    @php
+        $adaCover = ! str_contains($image, 'blog-post');
+    @endphp
+
     <div class="card h-100 shadow-sm border-0">
         <div class="position-relative">
-            <img src="{{ $image }}" class="card-img-top" alt="{{ $title }}"
-                style="aspect-ratio: 2/3; object-fit: cover;">
+            @if ($adaCover)
+                <img src="{{ $image }}" class="card-img-top" alt="{{ $title }}"
+                    style="aspect-ratio: 2/3; object-fit: cover;"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            @endif
+
+            <div style="aspect-ratio: 2/3; display: {{ $adaCover ? 'none' : 'flex' }}; flex-direction: column;
+                    align-items: center; justify-content: center; gap: 8px; padding: 12px; text-align: center;
+                    background: linear-gradient(160deg, #312e81 0%, #0f172a 100%); color: #c7d2fe; font-size: 12px;">
+                <i class="bi bi-image" style="font-size: 1.8rem; color: #818cf8;"></i>
+                <span style="font-weight: 600;">{{ $title }}</span>
+            </div>
+
             @isset($time)
                 <span class="badge bg-dark bg-opacity-75 position-absolute top-0 start-0 m-1" style="font-size:10px;">
                     <i class="bi bi-clock"></i> {{ $time }}

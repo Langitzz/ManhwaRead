@@ -59,7 +59,7 @@
                 </div>
                 <div class="card-body">
                     <form action="{{ route('chapter.pages.store', $chapter) }}" method="POST"
-                        enctype="multipart/form-data">
+                        enctype="multipart/form-data" autocomplete="off">
                         @csrf
 
                         <div class="mb-3">
@@ -102,7 +102,7 @@
                                 <div class="card-body p-2 text-center">
                                     <small class="d-block mb-2">Halaman {{ $page->nomor_halaman }}</small>
                                     <form action="{{ route('chapter.pages.destroy', $page) }}" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus halaman ini?')">
+                                        data-confirm="Yakin ingin menghapus halaman ini?">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger w-100">
@@ -124,5 +124,4 @@
             </div>
         </div>
     </div>
-    </main>
 @endsection

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminUserController;
-use App\Http\Controllers\BackupController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ChapterController;
@@ -13,11 +12,14 @@ use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\LogAktivitasController;
 use App\Http\Controllers\ManhwaController;
+use App\Http\Controllers\NotifikasiController;
+use App\Http\Controllers\Owner\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RiwayatController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\UserBookmarkController;
+use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
@@ -41,15 +43,35 @@ Route::controller(UserController::class)->group(function () {
         ->name('library.index');
 });
 
+Route::prefix('owner')->middleware(['auth', 'role:owner'])->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('owner.dashboard');
+    Route::get('/users', [App\Http\Controllers\Owner\UserController::class, 'index'])->name('owner.users.index');
+    Route::get('/manhwa', [App\Http\Controllers\Owner\ManhwaController::class, 'index'])->name('owner.manhwa.index');
+    Route::get('/pengaturan', [App\Http\Controllers\Owner\SiteSettingController::class, 'edit'])->name('owner.pengaturan');
+    Route::patch('/pengaturan', [App\Http\Controllers\Owner\SiteSettingController::class, 'update'])->name('pengaturan.update.owner');
+    Route::get('/log-aktivitas', [App\Http\Controllers\Owner\LogAktivitasController::class, 'index'])->name('owner.log-aktivitas');
+});
+
+Route::prefix('supervisor')->middleware(['auth', 'role:supervisor'])->group(function () {
+    Route::get('/', [App\Http\Controllers\Supervisor\DashboardController::class, 'index'])->name('supervisor.dashboard');
+    Route::get('/users', [App\Http\Controllers\Supervisor\UserController::class, 'index'])->name('supervisor.users.index');
+    Route::get('/users/create', [App\Http\Controllers\Supervisor\UserController::class, 'create'])->name('supervisor.users.create');
+    Route::post('/users', [App\Http\Controllers\Supervisor\UserController::class, 'store'])->name('supervisor.users.store');
+    Route::put('/users/{user}', [App\Http\Controllers\Supervisor\UserController::class, 'update'])->name('supervisor.users.update');
+    Route::delete('/users/{user}', [App\Http\Controllers\Supervisor\UserController::class, 'destroy'])->name('supervisor.users.destroy');
+    Route::get('/manhwa', [App\Http\Controllers\Supervisor\ManhwaController::class, 'index'])->name('supervisor.manhwa.index');
+    Route::get('/komentar', [App\Http\Controllers\Supervisor\KomentarController::class, 'index'])->name('supervisor.komentar.index');
+    Route::get('/komentar/{komentar}', [App\Http\Controllers\Supervisor\KomentarController::class, 'show'])->name('supervisor.komentar.detail');
+    Route::patch('/komentar/{komentar}/toggle-status', [App\Http\Controllers\Supervisor\KomentarController::class, 'toggleStatus'])->name('supervisor.komentar.toggle-status');
+    Route::delete('/komentar/{komentar}', [App\Http\Controllers\Supervisor\KomentarController::class, 'destroy'])->name('supervisor.komentar.destroy');
+    Route::get('/log-aktivitas', [App\Http\Controllers\Supervisor\LogAktivitasController::class, 'index'])->name('supervisor.log-aktivitas');
+});
+
 Route::prefix('admin')
     ->middleware(['auth', 'admin'])
     ->group(function () {
         Route::get('/', [AdminController::class, 'index'])
             ->name('admin');
-        Route::get('/backup', [BackupController::class, 'index'])
-            ->name('backup.index');
-        Route::get('/backup/download', [BackupController::class, 'download'])
-            ->name('backup.download');
         Route::get('/pengaturan', [SiteSettingController::class, 'edit'])
             ->name('pengaturan.edit');
         Route::patch('/pengaturan', [SiteSettingController::class, 'update'])
@@ -173,20 +195,34 @@ Route::prefix('admin')
     });
 
 Route::middleware('auth')->group(function () {
+        Route::post('/notifikasi/{id}/baca', [NotifikasiController::class, 'baca'])
+        ->name('notifikasi.baca');
+    Route::post('/notifikasi/baca-semua', [NotifikasiController::class, 'bacaSemua'])
+        ->name('notifikasi.baca-semua');
+
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
     Route::get('/akun', [UserProfileController::class, 'edit'])
         ->name('akun.edit');
     Route::patch('/akun', [UserProfileController::class, 'update'])
         ->name('akun.update');
     Route::delete('/akun', [UserProfileController::class, 'destroy'])
         ->name('akun.destroy');
+    Route::get('/akun/komentar', [UserProfileController::class, 'komentar'])
+        ->name('akun.komentar');
+    Route::get('/akun/statistik', [UserProfileController::class, 'statistik'])
+        ->name('akun.statistik');
+
     Route::post('/manhwa/{manhwa:slug}/bookmark', [UserBookmarkController::class, 'toggle'])
         ->name('bookmark.toggle');
+    Route::post('/manhwa/{manhwa:slug}/komentar', [UserCommentController::class, 'store'])
+        ->name('komentar.store');
+    Route::post('/manhwa/{manhwa:slug}/chapter/{nomorChapter}/komentar', [UserCommentController::class, 'storeChapter'])
+        ->name('komentar.store.chapter');
 });
-
 require __DIR__.'/auth.php';

@@ -104,4 +104,18 @@
             @endguest
         </div>
     </section>
+
+    <script>
+        window.addEventListener('load', function() {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.get('tab') === 'riwayat') {
+                const tabRiwayat = document.getElementById('history-tab');
+
+                if (tabRiwayat) {
+                    bootstrap.Tab.getOrCreateInstance(tabRiwayat).show();
+                }
+            }
+        });
+    </script>
 @endsection

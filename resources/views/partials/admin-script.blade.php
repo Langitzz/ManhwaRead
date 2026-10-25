@@ -219,3 +219,155 @@
     sparkline3.render();
 </script>
 <!--end::Script-->
+
+
+{{-- Modal konfirmasi custom, dipakai bareng Admin/Owner/Supervisor --}}
+<style>
+    #confirmModal .modal-content {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+    }
+
+    #confirmModal .modal-body {
+        padding: 2.25rem 2rem 1.75rem;
+        text-align: center;
+    }
+
+    #confirmModal .confirm-icon-wrap {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 1.25rem;
+        border-radius: 50%;
+        background: rgba(220, 53, 69, .12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: confirmPulse 1.8s ease-in-out infinite;
+    }
+
+    #confirmModal .confirm-icon-wrap i {
+        font-size: 2.1rem;
+        color: #dc3545;
+    }
+
+    @keyframes confirmPulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, .25);
+        }
+
+        70% {
+            box-shadow: 0 0 0 14px rgba(220, 53, 69, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+        }
+    }
+
+    #confirmModal h5 {
+        font-weight: 700;
+        margin-bottom: .5rem;
+    }
+
+    #confirmModal #confirmModalMessage {
+        color: #9ca3af;
+        margin-bottom: 1.75rem;
+    }
+
+    #confirmModal .modal-footer {
+        border-top: none;
+        padding: 0 2rem 2rem;
+        justify-content: center;
+        gap: .75rem;
+    }
+
+    #confirmModal .btn {
+        border-radius: 50px;
+        padding: .55rem 1.75rem;
+        font-weight: 600;
+        min-width: 110px;
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    #confirmModal .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    #confirmModal .btn-danger {
+        box-shadow: 0 8px 18px rgba(220, 53, 69, .35);
+    }
+
+    #confirmModal .btn-danger:hover {
+        box-shadow: 0 10px 22px rgba(220, 53, 69, .45);
+    }
+</style>
+
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="confirm-icon-wrap">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <h5>Yakin Ingin Melanjutkan?</h5>
+                <p id="confirmModalMessage" class="mb-0">Yakin ingin melakukan aksi ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="confirmModalOkBtn">
+                    <i class="bi bi-trash3 me-1"></i>
+                    Ya, Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        let formToSubmit = null;
+        const modalEl = document.getElementById('confirmModal');
+        const modal = new bootstrap.Modal(modalEl);
+        const messageEl = document.getElementById('confirmModalMessage');
+        const okBtn = document.getElementById('confirmModalOkBtn');
+
+        document.querySelectorAll('form[data-confirm]').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                formToSubmit = form;
+                messageEl.textContent = form.dataset.confirm;
+                modal.show();
+            });
+        });
+
+        okBtn.addEventListener('click', function() {
+            modal.hide();
+            if (formToSubmit) {
+                formToSubmit.submit();
+            }
+        });
+    })();
+</script>
+
+<script>
+    document.querySelectorAll('input, textarea, select').forEach(function(field) {
+        field.addEventListener('invalid', function() {
+            if (field.validity.valueMissing) {
+                field.setCustomValidity('Kolom ini wajib diisi.');
+            } else if (field.validity.typeMismatch) {
+                field.setCustomValidity(field.type === 'email' ?
+                    'Masukkan alamat email yang valid.' :
+                    'Format yang dimasukkan tidak valid.');
+            } else if (field.validity.tooShort) {
+                field.setCustomValidity('Terlalu pendek, minimal ' + field.minLength + ' karakter.');
+            } else {
+                field.setCustomValidity('Masukkan nilai yang valid.');
+            }
+        });
+        field.addEventListener('input', function() {
+            field.setCustomValidity('');
+        });
+    });
+</script>

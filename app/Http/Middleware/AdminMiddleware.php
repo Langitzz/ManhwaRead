@@ -15,7 +15,6 @@ class AdminMiddleware
         'admin.role.' => 'role_user',
         'admin.access.' => 'hak_akses',
         'admin.log.' => 'log_aktivitas',
-        'backup.' => 'backup',
         'pengaturan.' => 'pengaturan',
         'genre.' => 'genre',
         'manhwa.' => 'manhwa',

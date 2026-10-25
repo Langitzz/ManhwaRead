@@ -1,14 +1,93 @@
 <style>
     .app-sidebar[data-bs-theme="dark"] {
-        --lte-sidebar-hover-bg: rgba(13, 202, 240, 0.12);
-        --lte-sidebar-hover-color: #0dcaf0;
-        --lte-sidebar-menu-active-bg: rgba(13, 202, 240, 0.18);
-        --lte-sidebar-menu-active-color: #0dcaf0;
-        --lte-sidebar-submenu-color: #0dcaf0;
-        --lte-sidebar-submenu-hover-color: #0dcaf0;
-        --lte-sidebar-submenu-hover-bg: rgba(13, 202, 240, 0.12);
-        --lte-sidebar-submenu-active-color: #0dcaf0;
-        --lte-sidebar-submenu-active-bg: rgba(13, 202, 240, 0.18);
+        --lte-sidebar-hover-bg: rgba(99, 102, 241, .12);
+        --lte-sidebar-hover-color: #e0e7ff;
+        --lte-sidebar-menu-active-bg: rgba(99, 102, 241, .2);
+        --lte-sidebar-menu-active-color: #a5f3fc;
+        --lte-sidebar-submenu-color: #94a3b8;
+        --lte-sidebar-submenu-hover-color: #e0e7ff;
+        --lte-sidebar-submenu-hover-bg: rgba(99, 102, 241, .1);
+        --lte-sidebar-submenu-active-color: #a5f3fc;
+        --lte-sidebar-submenu-active-bg: rgba(34, 211, 238, .12);
+    }
+
+    /* Item menu utama yang aktif: gradasi + garis aksen di kiri */
+    .app-sidebar[data-bs-theme="dark"] .sidebar-menu > .nav-item > .nav-link.active {
+        background: linear-gradient(90deg, rgba(99, 102, 241, .28), rgba(34, 211, 238, .08)) !important;
+        box-shadow: inset 3px 0 0 #22d3ee;
+        border-radius: 12px;
+    }
+
+    /* Submenu yang aktif: garis aksen juga */
+    .app-sidebar[data-bs-theme="dark"] .nav-treeview .nav-link.active {
+        box-shadow: inset 3px 0 0 #22d3ee;
+        border-radius: 10px;
+    }
+
+    .app-sidebar[data-bs-theme="dark"] .sidebar-menu .nav-link {
+        border-radius: 12px;
+        transition: background-color .15s ease, color .15s ease;
+    }
+
+    /* Ikon: indigo saat diam, cyan saat aktif atau disentuh */
+    .app-sidebar[data-bs-theme="dark"] .sidebar-menu .nav-icon {
+        color: #818cf8;
+        transition: color .15s ease;
+    }
+
+    .app-sidebar[data-bs-theme="dark"] .sidebar-menu .nav-link:hover .nav-icon,
+    .app-sidebar[data-bs-theme="dark"] .sidebar-menu .nav-link.active .nav-icon {
+        color: #22d3ee;
+    }
+
+    /* Nama brand dengan gradasi */
+    .app-sidebar[data-bs-theme="dark"] .brand-text {
+        background: linear-gradient(90deg, #a5b4fc, #22d3ee);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent !important;
+        font-weight: 800;
+    }
+
+        /* ===== Submenu sidebar ===== */
+    .app-sidebar[data-bs-theme="dark"] .nav-treeview {
+        position: relative;
+        margin-left: 22px;
+        padding-left: 10px;
+        margin-top: 4px;
+    }
+
+    /* Garis vertikal penghubung di kiri submenu */
+    .app-sidebar[data-bs-theme="dark"] .nav-treeview::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 6px;
+        bottom: 6px;
+        width: 1px;
+        background: linear-gradient(180deg, rgba(99, 102, 241, .5), rgba(34, 211, 238, .15));
+    }
+
+    .app-sidebar[data-bs-theme="dark"] .nav-treeview .nav-link {
+        font-size: .9rem;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        margin-bottom: 2px;
+    }
+
+    /* Ikon submenu sedikit lebih kecil dari ikon menu utama */
+    .app-sidebar[data-bs-theme="dark"] .nav-treeview .nav-icon {
+        font-size: .9rem;
+        width: 1.2rem;
+    }
+
+    /* Panah buka-tutup di menu induk diberi transisi halus */
+    .app-sidebar[data-bs-theme="dark"] .nav-arrow {
+        transition: transform .25s ease;
+    }
+
+    .app-sidebar[data-bs-theme="dark"] .menu-open > .nav-link .nav-arrow {
+        transform: rotate(90deg);
     }
 </style>
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
@@ -17,15 +96,16 @@
         <!--begin::Brand Link-->
         <a href="{{ route('admin') }}" class="brand-link">
             @if ($siteSetting->logo)
+                <i class="bi bi-book-half fs-3 brand-icon-mini"></i>
                 <img src="{{ asset('storage/' . $siteSetting->logo) }}" alt="{{ $siteSetting->nama_situs }}"
-                    class="ms-3 me-2" style="height: 24px;">
+                    class="brand-logo-full ms-3 me-2" style="height: 24px;">
             @else
                 <i class="bi bi-book-half fs-3 ms-3 me-2"></i>
-            @endif
 
-            <span class="brand-text fw-bold">
-                {{ $siteSetting->nama_situs }}
-            </span>
+                <span class="brand-text fw-bold">
+                    {{ $siteSetting->nama_situs }}
+                </span>
+            @endif
         </a>
         <!--end::Brand Link-->
     </div>
@@ -229,16 +309,6 @@
                                 </li>
                             @endif
                         </ul>
-                    </li>
-                @endif
-
-                @if (in_array('backup', $userPermissions))
-                    <li class="nav-item">
-                        <a href="{{ route('backup.index') }}"
-                            class="nav-link {{ request()->routeIs('backup.*') ? 'active' : '' }}">
-                            <i class="nav-icon bi bi-hdd-network"></i>
-                            <p>Backup Database</p>
-                        </a>
                     </li>
                 @endif
 

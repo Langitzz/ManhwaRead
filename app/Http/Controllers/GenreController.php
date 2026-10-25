@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class GenreController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $genres = Genre::withCount('manhwas')->orderBy('nama_genre')->get();
+        $genres = Genre::withCount('manhwas')
+            ->when($request->filled('cari'), function ($query) use ($request) {
+                $query->where('nama_genre', 'like', '%' . $request->cari . '%');
+            })
+            ->orderBy('nama_genre')
+            ->get();
 
         return view('admin.genre.index', compact('genres'));
     }

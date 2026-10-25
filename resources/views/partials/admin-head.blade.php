@@ -1,6 +1,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{{ $siteSetting->nama_situs }} | @yield('title')</title>
+    <link rel="icon" href="{{ asset('assets/blogy/assets/img/favicon.png') }}">
 
     <!--begin::Theme Init (prevents flash of incorrect theme on load, #6043)-->
     <script>
@@ -102,6 +103,267 @@
             background: rgba(255, 255, 255, .06);
             border-radius: 8px;
             transition: .2s ease;
+        }
+
+        /* ===== Global admin: kartu & tabel ===== */
+        .card {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            background: transparent;
+            border-bottom: 1px solid rgba(148, 163, 184, .15);
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .card-header .card-title {
+            float: none;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        [data-bs-theme="dark"] .card {
+            border: 1px solid rgba(148, 163, 184, .12);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .25);
+        }
+
+        [data-bs-theme="dark"] .table {
+            --bs-table-bg: transparent;
+            --bs-table-border-color: #334155;
+            --bs-table-hover-bg: rgba(148, 163, 184, .06);
+            --bs-table-color: #e2e8f0;
+            color: #e2e8f0;
+        }
+
+        [data-bs-theme="dark"] .table> :not(caption)>*>* {
+            border-color: #334155;
+        }
+
+        [data-bs-theme="dark"] .table>thead>tr>th {
+            background: #0f172a;
+            color: #94a3b8;
+            font-size: .8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            border-color: #334155;
+        }
+
+        /* ===== Leaderboard dashboard ===== */
+        [data-bs-theme="dark"] .leaderboard tbody tr>td:first-child {
+            width: 52px;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(1)>td:first-child {
+            background: linear-gradient(90deg, rgba(250, 204, 21, .22), transparent);
+            color: #fde68a;
+            font-weight: 800;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(2)>td:first-child {
+            background: linear-gradient(90deg, rgba(203, 213, 225, .18), transparent);
+            color: #e2e8f0;
+            font-weight: 800;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(3)>td:first-child {
+            background: linear-gradient(90deg, rgba(251, 146, 60, .2), transparent);
+            color: #fdba74;
+            font-weight: 800;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr>td:first-child {
+            width: 52px;
+            font-variant-numeric: tabular-nums;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr>td:first-child::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+            background: #334155;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(1)>td:first-child {
+            background: linear-gradient(90deg, rgba(250, 204, 21, .22), transparent);
+            color: #fde68a;
+            font-weight: 800;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(1)>td:first-child::before {
+            background: #facc15;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(2)>td:first-child {
+            background: linear-gradient(90deg, rgba(203, 213, 225, .18), transparent);
+            color: #e2e8f0;
+            font-weight: 800;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(2)>td:first-child::before {
+            background: #cbd5e1;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(3)>td:first-child {
+            background: linear-gradient(90deg, rgba(251, 146, 60, .2), transparent);
+            color: #fdba74;
+            font-weight: 800;
+        }
+
+        [data-bs-theme="dark"] .leaderboard tbody tr:nth-child(3)>td:first-child::before {
+            background: #fb923c;
+        }
+
+        /* ===== Kartu ringkasan dashboard ===== */
+        .small-box {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .25);
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .small-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 34px rgba(0, 0, 0, .35);
+        }
+
+        .small-box .inner h3 {
+            font-weight: 800;
+        }
+
+        .small-box.text-bg-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%) !important;
+        }
+
+        .small-box.text-bg-danger {
+            background: linear-gradient(135deg, #e11d48 0%, #fb7185 100%) !important;
+        }
+
+        .small-box.text-bg-warning {
+            background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%) !important;
+        }
+
+        .small-box.text-bg-info {
+            background: linear-gradient(135deg, #0891b2 0%, #22d3ee 100%) !important;
+        }
+
+        .small-box.text-bg-success {
+            background: linear-gradient(135deg, #059669 0%, #34d399 100%) !important;
+        }
+
+        .small-box.text-bg-secondary {
+            background: linear-gradient(135deg, #334155 0%, #64748b 100%) !important;
+        }
+
+        /* ===== Badge admin (tema gelap) ===== */
+        [data-bs-theme="dark"] .badge {
+            font-weight: 600;
+            padding: .4em .75em;
+            border-radius: 999px;
+            border: 1px solid transparent;
+        }
+
+        [data-bs-theme="dark"] .badge.bg-success {
+            background: rgba(34, 197, 94, .18) !important;
+            color: #86efac !important;
+            border-color: rgba(34, 197, 94, .3);
+        }
+
+        [data-bs-theme="dark"] .badge.bg-primary {
+            background: rgba(99, 102, 241, .2) !important;
+            color: #c7d2fe !important;
+            border-color: rgba(99, 102, 241, .35);
+        }
+
+        [data-bs-theme="dark"] .badge.bg-warning {
+            background: rgba(251, 191, 36, .16) !important;
+            color: #fde68a !important;
+            border-color: rgba(251, 191, 36, .3);
+        }
+
+        [data-bs-theme="dark"] .badge.bg-danger {
+            background: rgba(248, 113, 113, .16) !important;
+            color: #fca5a5 !important;
+            border-color: rgba(248, 113, 113, .3);
+        }
+
+        [data-bs-theme="dark"] .badge.bg-secondary {
+            background: rgba(148, 163, 184, .16) !important;
+            color: #cbd5e1 !important;
+            border-color: rgba(148, 163, 184, .25);
+        }
+
+        /* ===== Badge text-bg-* dan info (tema gelap) ===== */
+        [data-bs-theme="dark"] .badge.text-bg-success {
+            background: rgba(34, 197, 94, .18) !important;
+            color: #86efac !important;
+            border: 1px solid rgba(34, 197, 94, .3);
+        }
+
+        [data-bs-theme="dark"] .badge.text-bg-secondary {
+            background: rgba(148, 163, 184, .16) !important;
+            color: #cbd5e1 !important;
+            border: 1px solid rgba(148, 163, 184, .25);
+        }
+
+        [data-bs-theme="dark"] .badge.text-bg-danger {
+            background: rgba(248, 113, 113, .16) !important;
+            color: #fca5a5 !important;
+            border: 1px solid rgba(248, 113, 113, .3);
+        }
+
+        [data-bs-theme="dark"] .badge.text-bg-primary {
+            background: rgba(99, 102, 241, .2) !important;
+            color: #c7d2fe !important;
+            border: 1px solid rgba(99, 102, 241, .35);
+        }
+
+        [data-bs-theme="dark"] .badge.bg-info {
+            background: rgba(34, 211, 238, .16) !important;
+            color: #a5f3fc !important;
+            border: 1px solid rgba(34, 211, 238, .3);
+        }
+
+                /* ===== Logo sidebar saat mode mini ===== */
+        .brand-icon-mini {
+            display: none;
+        }
+
+        .sidebar-mini.sidebar-collapse .brand-logo-full {
+            display: none;
+        }
+
+        .sidebar-mini.sidebar-collapse .brand-icon-mini {
+            display: inline-block;
+            margin: 0 auto;
+        }
+
+        .sidebar-mini.sidebar-collapse:not(.sidebar-without-hover) .app-sidebar:hover .brand-logo-full {
+            display: inline-block;
+        }
+
+        .sidebar-mini.sidebar-collapse:not(.sidebar-without-hover) .app-sidebar:hover .brand-icon-mini {
+            display: none;
         }
     </style>
 </head>

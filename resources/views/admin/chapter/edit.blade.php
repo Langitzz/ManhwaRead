@@ -27,7 +27,7 @@
 
     <div class="app-content">
         <div class="container-fluid">
-            <form action="{{ route('chapter.update', $chapter) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('chapter.update', $chapter) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 @method('PUT')
                 <div class="card">

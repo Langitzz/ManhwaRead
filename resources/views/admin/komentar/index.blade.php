@@ -34,7 +34,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('komentar.index') }}" method="GET" class="row mb-3 g-2">
+                    <form action="{{ route('komentar.index') }}" method="GET" class="row mb-3" autocomplete="off">
                         <div class="col-md-5">
                             <div class="input-group">
                                 <input type="text" name="cari" class="form-control" placeholder="Cari komentar..."
@@ -63,18 +63,33 @@
                                     <th>Komentar</th>
                                     <th width="170">Tanggal</th>
                                     <th width="120">Status</th>
-                                    <th width="150">Aksi</th>
+                                    <th width="110">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($comments as $comment)
                                     <tr>
-                                        <td>{{ $loop->iteration + ($comments->currentPage() - 1) * $comments->perPage() }}
+                                        <td>{{ $loop->iteration + ($comments->currentPage() - 1) * $comments->perPage() }}</td>
+                                        <td class="fw-semibold">{{ $comment->user->name }}</td>
+                                        <td>
+                                            {{ $comment->manhwa->judul }}
+                                            @if ($comment->chapter)
+                                                <span class="badge bg-primary ms-1">
+                                                    Ch. {{ $comment->chapter->nomor_chapter }}
+                                                </span>
+                                            @else
+                                                <span class="badge bg-secondary ms-1">Umum</span>
+                                            @endif
                                         </td>
-                                        <td>{{ $comment->user->name }}</td>
-                                        <td>{{ $comment->manhwa->judul }}</td>
-                                        <td>{{ \Illuminate\Support\Str::limit($comment->isi, 60) }}</td>
-                                        <td>{{ $comment->created_at->format('d M Y') }}</td>
+                                        <td style="color:#cbd5e1; line-height:1.5;">
+                                            {{ \Illuminate\Support\Str::limit($comment->isi, 60) }}
+                                        </td>
+                                        <td>
+                                            <span class="text-muted">
+                                                <i class="bi bi-calendar3 me-1"></i>
+                                                {{ $comment->created_at->format('d M Y') }}
+                                            </span>
+                                        </td>
                                         <td>
                                             @if ($comment->status)
                                                 <span class="badge text-bg-success">Aktif</span>
@@ -83,7 +98,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('komentar.detail', $comment) }}" class="btn btn-info btn-sm">
+                                            <a href="{{ route('komentar.detail', $comment) }}"
+                                                class="btn btn-info btn-sm" title="Lihat detail">
                                                 <i class="bi bi-eye"></i>
                                             </a>
                                         </td>
@@ -101,7 +117,10 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $comments->links() }}
+
+                    <div class="mt-3 d-flex justify-content-center">
+                        {{ $comments->links() }}
+                    </div>
                 </div>
             </div>
         </div>

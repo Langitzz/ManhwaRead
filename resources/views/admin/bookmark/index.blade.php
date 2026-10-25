@@ -3,7 +3,6 @@
 @section('title', 'Bookmark')
 
 @section('content')
-
     <div class="app-content-header">
         <div class="container-fluid">
             <div class="row">
@@ -34,7 +33,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('bookmark.index') }}" method="GET" class="row mb-3">
+                    <form action="{{ route('bookmark.index') }}" method="GET" class="row mb-3" autocomplete="off">
                         <div class="col-md-4">
                             <div class="input-group">
                                 <input type="text" name="cari" class="form-control" placeholder="Cari bookmark..."
@@ -53,24 +52,28 @@
                                     <th width="70">No</th>
                                     <th>User</th>
                                     <th>Manhwa</th>
-                                    <th width="180">Tanggal Bookmark</th>
-                                    <th width="140">Aksi</th>
+                                    <th width="200">Tanggal Bookmark</th>
+                                    <th width="110">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($bookmarks as $bookmark)
                                     <tr>
-                                        <td>{{ $loop->iteration + ($bookmarks->currentPage() - 1) * $bookmarks->perPage() }}
+                                        <td>{{ $loop->iteration + ($bookmarks->currentPage() - 1) * $bookmarks->perPage() }}</td>
+                                        <td class="fw-semibold">{{ $bookmark->user?->name ?? '-' }}</td>
+                                        <td>{{ $bookmark->manhwa?->judul ?? '-' }}</td>
+                                        <td>
+                                            <span class="text-muted">
+                                                <i class="bi bi-calendar3 me-1"></i>
+                                                {{ $bookmark->created_at->format('d M Y, H:i') }}
+                                            </span>
                                         </td>
-                                        <td>{{ $bookmark->user->name }}</td>
-                                        <td>{{ $bookmark->manhwa->judul }}</td>
-                                        <td>{{ $bookmark->created_at->format('d M Y, H:i') }}</td>
                                         <td>
                                             <form action="{{ route('bookmark.destroy', $bookmark) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus bookmark ini?')">
+                                                data-confirm="Yakin ingin menghapus bookmark ini?">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus bookmark">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
@@ -89,7 +92,10 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $bookmarks->links() }}
+
+                    <div class="mt-3 d-flex justify-content-center">
+                        {{ $bookmarks->links() }}
+                    </div>
                 </div>
             </div>
         </div>

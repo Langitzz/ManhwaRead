@@ -1,45 +1,135 @@
 <x-guest-layout>
+    @include('auth.partials.login-styles')
 
-    <div class="text-center mb-3">
-        <h2 class="fw-bold mb-1" style="color:#f8fafc;">
-            Lupa Password?
-        </h2>
-        <p class="mb-0" style="color:#94a3b8;">
-            Gak masalah. Masukkan alamat email kamu, kami akan kirimkan link buat reset password.
-        </p>
-    </div>
+    <style>
+        body {
+            margin: 0;
+            background: #0b1120;
+        }
 
-    <div class="card"
-        style="border-radius:16px; border:none; background:#1f2937; box-shadow:0 8px 25px rgba(0,0,0,.25);">
-        <div class="card-body p-4">
+        .forgot-wrap {
+            position: fixed;
+            inset: 0;
+            overflow-y: auto;
+            display: flex;
+            padding: 16px;
+            background:
+                radial-gradient(circle at 15% 10%, rgba(99,102,241,.18), transparent 40%),
+                radial-gradient(circle at 85% 90%, rgba(34,211,238,.12), transparent 40%),
+                #0b1120;
+        }
 
-            <x-auth-session-status class="mb-3" :status="session('status')" />
+        .forgot-wrap > div {
+            margin: auto;
+        }
 
-            <form method="POST" action="{{ route('password.email') }}">
-                @csrf
+        @keyframes forgot-rise {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: none; }
+        }
 
-                <div class="mb-3">
-                    <x-input-label for="email" value="Email" class="text-light" />
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                        class="form-control" placeholder="nama@email.com"
-                        style="margin-top:8px; height:50px; border-radius:12px; background:#111827;
-                            color:#f8fafc; border-color:#4b5563;">
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        .forgot-card {
+            animation: forgot-rise .6s ease both;
+        }
+
+        .forgot-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.9rem;
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+            box-shadow: 0 12px 30px rgba(99, 102, 241, .35);
+        }
+
+        #forgot-btn .btn-spinner {
+            display: none;
+        }
+
+        #forgot-btn.is-loading .btn-label {
+            display: none;
+        }
+
+        #forgot-btn.is-loading .btn-spinner {
+            display: inline-block;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .forgot-card {
+                animation: none;
+            }
+        }
+    </style>
+
+    <div class="forgot-wrap">
+        <div style="width:100%; max-width:420px;">
+
+            <div class="text-center mb-4">
+                <div class="forgot-icon mx-auto mb-3">
+                    <i class="bi bi-key"></i>
                 </div>
+                <h2 class="fw-bold mb-1" style="color:#f8fafc;">Lupa Password?</h2>
+                <p class="mb-0" style="color:#94a3b8;">
+                    Tenang, masukkan alamat email kamu. Kami akan kirimkan link untuk reset password.
+                </p>
+            </div>
 
-                <button type="submit" class="btn btn-primary w-100"
-                    style="border-radius:50px; height:50px; font-weight:600;">
-                    Kirim Link Reset Password
-                </button>
-            </form>
+            <div class="auth-card forgot-card p-4 p-md-5">
 
-            <div class="text-center mt-3">
-                <a href="{{ route('login') }}" style="color:#60a5fa; text-decoration:none;">
-                    Kembali ke halaman Login
-                </a>
+                @if (session('status'))
+                    <div class="auth-alert mb-3">{{ session('status') }}</div>
+                @endif
+
+                <form id="forgot-form" method="POST" action="{{ route('password.email') }}" autocomplete="off">
+                    @csrf
+
+                    {{-- Email --}}
+                    <div class="mb-4">
+                        <label for="email" class="auth-label">Email</label>
+                        <div class="auth-field">
+                            <i class="bi bi-envelope auth-icon"></i>
+                            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+                                autocomplete="email"
+                                class="form-control auth-input {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                placeholder="nama@email.com">
+                        </div>
+                        @error('email')
+                            <div class="auth-error">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button type="submit" id="forgot-btn" class="auth-btn">
+                        <span class="btn-label">
+                            <i class="bi bi-send me-1"></i>
+                            Kirim Link Reset Password
+                        </span>
+                        <span class="btn-spinner spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="text-center mt-4" style="color:#94a3b8; font-size:.9rem;">
+                <a href="{{ route('login') }}" class="auth-link">Kembali ke halaman Login</a>
             </div>
 
         </div>
     </div>
 
+    <script>
+        const forgotForm = document.getElementById('forgot-form');
+        const forgotBtn = document.getElementById('forgot-btn');
+
+        forgotForm.addEventListener('submit', function() {
+            forgotBtn.classList.add('is-loading');
+            forgotBtn.disabled = true;
+        });
+
+        window.addEventListener('pageshow', function() {
+            forgotBtn.classList.remove('is-loading');
+            forgotBtn.disabled = false;
+        });
+    </script>
 </x-guest-layout>

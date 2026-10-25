@@ -28,7 +28,7 @@
     <div class="app-content">
         <div class="container-fluid">
 
-            <form action="{{ route('manhwa.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('manhwa.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
                 @csrf
                 <div class="card">
                     <div class="card-header">

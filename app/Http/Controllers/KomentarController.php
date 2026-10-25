@@ -8,9 +8,14 @@ use Illuminate\Http\Request;
 
 class KomentarController extends Controller
 {
+    protected function indexRouteName(): string
+    {
+        return 'komentar.index';
+    }
+
     public function index(Request $request)
     {
-        $comments = Comment::with(['user', 'manhwa'])
+        $comments = Comment::with(['user', 'manhwa', 'chapter'])
             ->when($request->filled('cari'), function ($query) use ($request) {
                 $query->where('isi', 'like', '%' . $request->cari . '%');
             })
@@ -38,20 +43,18 @@ class KomentarController extends Controller
         ActivityLog::catat('Mengubah Status Komentar', "Komentar {$statusText}: {$komentar->user->name}");
 
         return redirect()
-            ->route('komentar.index')
+            ->back()
             ->with('success', "Komentar berhasil {$statusText}.");
     }
 
     public function destroy(Comment $komentar)
     {
-        $infoKomentar = "Komentar dari {$komentar->user->name}";
-
         $komentar->delete();
 
-        ActivityLog::catat('Menghapus Komentar', $infoKomentar);
+        ActivityLog::catat('Menghapus Komentar', "Komentar oleh {$komentar->user->name}");
 
         return redirect()
-            ->route('komentar.index')
+            ->route($this->indexRouteName())
             ->with('success', 'Komentar berhasil dihapus.');
     }
 }

@@ -33,6 +33,125 @@
             transform: translateX(4px);
             box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .35);
         }
+
+        /* ===== Toolbar pencarian ===== */
+        .search-toolbar .form-control,
+        .search-toolbar .form-select {
+            background-color: rgba(15, 23, 42, .7);
+            border: 1px solid rgba(148, 163, 184, .2);
+            color: #f8fafc;
+            border-radius: 999px;
+        }
+
+        .search-toolbar .form-control {
+            height: 42px;
+            font-size: .95rem;
+        }
+
+        .search-toolbar .form-select {
+            height: 42px;
+            font-size: .9rem;
+        }
+
+        .search-toolbar .form-control::placeholder {
+            color: #64748b;
+        }
+
+        .search-toolbar .form-control:focus,
+        .search-toolbar .form-select:focus {
+            background-color: rgba(15, 23, 42, .9);
+            color: #f8fafc;
+            border-color: #22d3ee;
+            box-shadow: 0 0 0 .2rem rgba(34, 211, 238, .15);
+        }
+
+        .search-toolbar .form-select option {
+            background: #0f172a;
+            color: #f8fafc;
+        }
+
+        .search-toolbar .btn-outline-info {
+            border-radius: 999px;
+            border-color: rgba(34, 211, 238, .4);
+            color: #67e8f9;
+        }
+
+        .search-toolbar .btn-outline-info:hover {
+            background: rgba(34, 211, 238, .12);
+            border-color: #22d3ee;
+            color: #a5f3fc;
+        }
+
+        .search-toolbar .btn-info {
+            border: none;
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+        }
+
+        .search-toolbar .btn-group .btn {
+            min-width: 42px;
+        }
+
+        /* ===== Chip filter (genre, status, dll) ===== */
+        .filter-chip {
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: .85rem;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .filter-chip.btn-outline-secondary {
+            color: #cbd5e1;
+            border-color: rgba(148, 163, 184, .3);
+            background: transparent;
+        }
+
+        .filter-chip.btn-outline-secondary:hover {
+            color: #f8fafc;
+            border-color: #22d3ee;
+            background: rgba(34, 211, 238, .08);
+        }
+
+        .filter-chip.btn-info {
+            border: none;
+            color: #fff;
+            background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+            box-shadow: 0 6px 16px rgba(34, 211, 238, .25);
+        }
+
+        .filter-chip:active {
+            transform: scale(.96);
+        }
+
+        /* ===== Pagination pencarian ===== */
+        .pagination .page-link {
+            background: #0f172a;
+            border-color: #334155;
+            color: #cbd5e1;
+            border-radius: 10px !important;
+            margin: 0 3px;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .pagination .page-link:hover {
+            background: rgba(34, 211, 238, .1);
+            border-color: #22d3ee;
+            color: #f8fafc;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(34, 211, 238, .25);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            background: transparent;
+            border-color: #1e293b;
+            color: #475569;
+        }
     </style>
 
     <section class="py-4">

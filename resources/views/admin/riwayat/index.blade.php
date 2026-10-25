@@ -33,7 +33,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('riwayat.index') }}" method="GET" class="row mb-3">
+                    <form action="{{ route('riwayat.index') }}" method="GET" class="row mb-3" autocomplete="off">
                         <div class="col-md-4">
                             <div class="input-group">
                                 <input type="text" name="cari" class="form-control" placeholder="Cari riwayat baca..."
@@ -52,26 +52,38 @@
                                     <th width="70">No</th>
                                     <th>User</th>
                                     <th>Manhwa</th>
-                                    <th>Chapter Terakhir</th>
-                                    <th width="180">Terakhir Dibaca</th>
-                                    <th width="140">Aksi</th>
+                                    <th width="180">Chapter Terakhir</th>
+                                    <th width="200">Terakhir Dibaca</th>
+                                    <th width="110">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($riwayats as $riwayat)
                                     <tr>
-                                        <td>{{ $loop->iteration + ($riwayats->currentPage() - 1) * $riwayats->perPage() }}
+                                        <td>{{ $loop->iteration + ($riwayats->currentPage() - 1) * $riwayats->perPage() }}</td>
+                                        <td class="fw-semibold">{{ $riwayat->user?->name ?? '-' }}</td>
+                                        <td>{{ $riwayat->manhwa?->judul ?? '-' }}</td>
+                                        <td>
+                                            @if ($riwayat->chapter)
+                                                <span class="badge bg-primary">
+                                                    Chapter {{ $riwayat->chapter->nomor_chapter }}
+                                                </span>
+                                            @else
+                                                <span class="text-muted">-</span>
+                                            @endif
                                         </td>
-                                        <td>{{ $riwayat->user->name }}</td>
-                                        <td>{{ $riwayat->manhwa->judul }}</td>
-                                        <td>Chapter {{ $riwayat->chapter->nomor_chapter }}</td>
-                                        <td>{{ $riwayat->updated_at->format('d M Y, H:i') }}</td>
+                                        <td>
+                                            <span class="text-muted">
+                                                <i class="bi bi-clock me-1"></i>
+                                                {{ $riwayat->updated_at->format('d M Y, H:i') }}
+                                            </span>
+                                        </td>
                                         <td>
                                             <form action="{{ route('riwayat.destroy', $riwayat) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus riwayat ini?')">
+                                                data-confirm="Yakin ingin menghapus riwayat ini?">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus riwayat">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
@@ -90,7 +102,10 @@
                             </tbody>
                         </table>
                     </div>
-                    {{ $riwayats->links() }}
+
+                    <div class="mt-3 d-flex justify-content-center">
+                        {{ $riwayats->links() }}
+                    </div>
                 </div>
             </div>
         </div>
